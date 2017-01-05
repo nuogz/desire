@@ -1,5 +1,6 @@
 module.exports = () => {
-	let app = koa(), mount = require('koa-mount');
+	let http = require('http'), https = require('https'), mount = require('koa-mount'),
+		app = koa(), app2 = koa();
 
 	let subs = {};
 
@@ -26,17 +27,29 @@ module.exports = () => {
 		_l('subServer', p, 'loaded, path is', conf.pathServ);
 	}
 
-	app.listen(80, '0.0.0.0', null, () => {
-		try {
-			let env = process.env,
-				uid = parseInt(env['SUDO_UID'] || process.getuid(), 10),
-				gid = parseInt(env['SUDO_GID'] || process.getgid(), 10);
+	app2.use(function*(next) {
+		yield next;
 
-			process.setgid(gid);
-			process.setuid(uid);
-		}
-		catch(e) { true; }
+		this.status = 301;
+		this.redirect('https://danor.top'+this.req.url);
 	});
+
+	https.createServer({
+		key: fs.readFileSync('/etc/letsencrypt/live/danor.top/privkey.pem'),  //ssl文件路径
+		cert: fs.readFileSync('/etc/letsencrypt/live/danor.top/fullchain.pem')  //ssl文件路径
+	}, app.callback()).listen(443);
+
+	http.createServer(app2.callback()).listen(80);
+
+	try {
+		let env = process.env,
+			uid = parseInt(env['SUDO_UID'] || process.getuid(), 10),
+			gid = parseInt(env['SUDO_GID'] || process.getgid(), 10);
+
+		process.setgid(gid);
+		process.setuid(uid);
+	}
+	catch(e) { true; }
 
 	_l('website started on 0.0.0.0:80');
 };
