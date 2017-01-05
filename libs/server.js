@@ -30,7 +30,7 @@ module.exports = () => {
 	app2.use(function*(next) {
 		yield next;
 
-		this.status = 301;
+		this.status = 302;
 		this.redirect('https://danor.top'+this.req.url);
 	});
 
