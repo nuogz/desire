@@ -1,5 +1,24 @@
+let getPems = () => {
+	let result;
+
+	try {
+		result = {
+			key: fs.readFileSync('/etc/letsencrypt/live/danor.top/privkey.pem'),
+			cert: fs.readFileSync('/etc/letsencrypt/live/danor.top/fullchain.pem')
+		};
+	}
+	catch(e) {
+		result = {
+			key: fs.readFileSync('D:/Runtime/Pem/privkey.pem'),
+			cert: fs.readFileSync('D:/Runtime/Pem/fullchain.pem')
+		};
+	}
+
+	return result;
+};
+
 module.exports = () => {
-	let http = require('http'), https = require('https'), mount = require('koa-mount'),
+	let http = require('http'), http2 = require('http2'), mount = require('koa-mount'),
 		app = koa(), app2 = koa();
 
 	let subs = {};
@@ -34,10 +53,7 @@ module.exports = () => {
 		this.redirect('https://danor.top'+this.req.url);
 	});
 
-	https.createServer({
-		key: fs.readFileSync('/etc/letsencrypt/live/danor.top/privkey.pem'),  //ssl文件路径
-		cert: fs.readFileSync('/etc/letsencrypt/live/danor.top/fullchain.pem')  //ssl文件路径
-	}, app.callback()).listen(443);
+	http2.createServer(getPems(), app.callback()).listen(443);
 
 	http.createServer(app2.callback()).listen(80);
 
@@ -51,5 +67,5 @@ module.exports = () => {
 	}
 	catch(e) { true; }
 
-	_l('website started on 0.0.0.0:80');
+	_l('website started');
 };
