@@ -32,11 +32,12 @@ module.exports = () => {
 
 		let $ = subs[p] = {
 			pa: function(paths) {
-				return path.join.apply(this, [_d, 'serv', conf.pathServ].concat(paths.split('/')));
+				return path.join.apply(this, [_d, 'serv', p].concat(paths.split('/')));
 			},
 			rq: function(paths) {
-				let obj = require(path.join.apply(this, [_d, 'serv', conf.pathServ].concat(paths.split('/'))));
-				return (obj instanceof Function)? obj($) : obj;
+				let obj = require(path.join.apply(this, [_d, 'serv', p].concat(paths.split('/'))));
+
+				return (obj instanceof Function) ? obj($) : obj;
 			},
 			conf: conf
 		};
