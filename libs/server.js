@@ -34,8 +34,12 @@ module.exports = () => {
 			pa: function(paths) {
 				return path.join.apply(this, [_d, 'serv', p].concat(paths.split('/')));
 			},
-			rq: function(paths) {
-				let obj = require(path.join.apply(this, [_d, 'serv', p].concat(paths.split('/'))));
+			rq: function(paths, reload) {
+				let pathRequire = path.join.apply(this, [_d, 'serv', p].concat(paths.split('/')));
+
+				if(reload) delete require.cache[require.resolve(pathRequire)];
+
+				let obj = require(pathRequire);
 
 				return (obj instanceof Function) ? obj($) : obj;
 			},
