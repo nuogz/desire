@@ -8,6 +8,12 @@ git clean -fd 1>>~/logs/kq/bsh.log 2>>~/logs/kq/bsh.log
 git checkout -- . 1>>~/logs/kq/bsh.log 2>>~/logs/kq/bsh.log
 git pull github master 1>>~/logs/kq/bsh.log 2>>~/logs/kq/bsh.log
 
+cd ~/serv/serv/af
+
+git clean -fd 1>>~/logs/kq/bsh.log 2>>~/logs/kq/bsh.log
+git checkout -- . 1>>~/logs/kq/bsh.log 2>>~/logs/kq/bsh.log
+git pull github master 1>>~/logs/kq/bsh.log 2>>~/logs/kq/bsh.log
+
 cd ~/serv
 
 git clean -fd 1>>~/logs/kq/bsh.log 2>>~/logs/kq/bsh.log
