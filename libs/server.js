@@ -34,8 +34,10 @@ module.exports = () => {
 			pa: function(paths) {
 				return path.join.apply(this, [_d, 'serv', p].concat(paths.split('/')));
 			},
-			rq: function(paths, reload) {
+			rq: function(paths, reload, repath) {
 				let pathRequire = path.join.apply(this, [_d, 'serv', p].concat(paths.split('/')));
+
+				if(repath) return pathRequire;
 
 				if(reload) delete require.cache[require.resolve(pathRequire)];
 
