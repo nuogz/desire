@@ -2,7 +2,7 @@ date +"%y-%m-%d %H:%M:%S" 1>~/logs/kq/bsh.log
 
 fr stop /root/serv/index.js 1>>~/logs/kq/bsh.log 2>>~/logs/kq/bsh.log
 
-ssh-agent 1>>~/logs/kq/bsh.log 2>>~/logs/kq/bsh.log
+eval `ssh-agent` 1>>~/logs/kq/bsh.log 2>>~/logs/kq/bsh.log
 
 ssh-add ~/.ssh/kqpu 1>>~/logs/kq/bsh.log 2>>~/logs/kq/bsh.log
 ssh-add ~/.ssh/kimg 1>>~/logs/kq/bsh.log 2>>~/logs/kq/bsh.log
