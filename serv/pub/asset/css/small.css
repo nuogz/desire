@@ -33,3 +33,7 @@
 	-webkit-user-select: text;
 	cursor: text;
 }
+
+.curp { cursor: pointer; }
+.cura { cursor: auto; }
+.curt { cursor: text; }

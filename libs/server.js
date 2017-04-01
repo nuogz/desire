@@ -24,6 +24,7 @@ module.exports = () => {
 	let subs = {};
 
 	app.use(require('koa-compress')({ threshold: 2048, flush: require('zlib').Z_SYNC_FLUSH }));
+	app.use(require('koa-bodyparser')());
 
 	let paths = fs.readdirSync(path.join(_d, 'serv'));
 
