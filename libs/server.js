@@ -18,8 +18,10 @@ let getPems = () => {
 };
 
 module.exports = () => {
-	let http = require('http'), http2 = require('http2'), mount = require('koa-mount'),
-		app = koa(), app2 = koa();
+	let http = require('http'), http2 = require('http2'),
+		Koa = require('koa'), Router = require('koa-router'),
+		mount = require('koa-mount'), static = require('koa-static'),
+		app = new Koa(), app2 = new Koa();
 
 	let subs = {};
 
@@ -29,7 +31,8 @@ module.exports = () => {
 	let paths = fs.readdirSync(path.join(_d, 'serv'));
 
 	for(let p of paths) {
-		let conf = require(path.join(_d, 'serv', p, 'conf.json'));
+		let conf = require(path.join(_d, 'serv', p, 'conf.json')),
+			koa = new Koa(), router = Router({ prefix: conf.pathServ });
 
 		let $ = subs[p] = {
 			pa: function(paths) {
@@ -46,19 +49,22 @@ module.exports = () => {
 
 				return (obj instanceof Function) ? obj($) : obj;
 			},
-			conf: conf
+			st: function(path) {
+				app.use(mount(conf.pathServ, static(path)));
+			},
+			conf: conf,
+			koa: koa
 		};
 
-		app.use(mount(conf.pathServ, $.koa = require(path.join(_d, 'serv', p))($)));
+		require(path.join(_d, 'serv', p))($, router);
+		app.use(router.routes());
 
 		_l('subServer', p, 'loaded, path is', conf.pathServ);
 	}
 
-	app2.use(function*(next) {
-		yield next;
-
-		this.status = 302;
-		this.redirect('https://danor.top'+this.req.url);
+	app2.use(async ctx => {
+		ctx.status = 301;
+		ctx.redirect('https://'+ctx.accept.headers.host+ctx.req.url);
 	});
 
 	http2.createServer(getPems(), app.callback()).listen(443);

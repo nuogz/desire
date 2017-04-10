@@ -1,23 +1,19 @@
-module.exports = ($) => {
-	let app = koa(), router = koaRouter();
-
+module.exports = ($, router) => {
 	let time = new Date();
 
-	router.post('/push', function*(next) {
-		yield next;
+	router.post('/push', async(ctx, next) => {
+		await next();
 
 		_l('webhook');
 
 		require('child_process').spawn('sh', [$.pa('webhook.sh')]);
 
-		this.body = 'webhook';
+		ctx.body = 'webhook';
 	});
 
-	router.get('/time', function*(next) {
-		yield next;
+	router.get('/time', async(ctx, next) => {
+		await next();
 
 		this.body = Math.round((new Date().getTime() - time.getTime()) / 1000);
 	});
-
-	return app.use(router.routes()).use(router.allowedMethods());
 };
