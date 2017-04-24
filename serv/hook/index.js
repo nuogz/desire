@@ -14,6 +14,6 @@ module.exports = ($, router) => {
 	router.get('/time', async(ctx, next) => {
 		await next();
 
-		this.body = Math.round((new Date().getTime() - time.getTime()) / 1000);
+		ctx.body = Math.round((new Date().getTime() - time.getTime()) / 1000);
 	});
 };
