@@ -5,6 +5,4 @@
 node_modules
 
 #Sub Serv
-serv/kq
-serv/af
-serv/ss
+serv
