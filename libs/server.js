@@ -21,18 +21,23 @@ module.exports = () => {
 	let http = require('http'), http2 = require('http2'),
 		Koa = require('koa'), Router = require('koa-router'),
 		mount = require('koa-mount'), static = require('koa-static'),
-		app = new Koa(), app2 = new Koa();
+		app2 = new Koa(), app1 = new Koa();
 
 	let subs = {};
 
-	app.use(require('koa-compress')({ threshold: 2048, flush: require('zlib').Z_SYNC_FLUSH }));
-	app.use(require('koa-bodyparser')());
+	app1.use(require('koa-compress')({ threshold: 2048, flush: require('zlib').Z_SYNC_FLUSH }));
+	app1.use(require('koa-bodyparser')());
+
+	app2.use(require('koa-compress')({ threshold: 2048, flush: require('zlib').Z_SYNC_FLUSH }));
+	app2.use(require('koa-bodyparser')());
+
 
 	let paths = fs.readdirSync(path.join(_d, 'serv'));
 
 	for(let p of paths) {
 		let conf = require(path.join(_d, 'serv', p, 'conf.json')),
-			koa = new Koa(), router = Router({ prefix: conf.pathServ });
+			koa = new Koa(), router = Router({ prefix: conf.pathServ }),
+			app = conf.http1 ? app1 : app2;
 
 		let $ = subs[p] = {
 			pa: function(paths) {
@@ -62,14 +67,16 @@ module.exports = () => {
 		_l('subServer', p, 'loaded, path is', conf.pathServ);
 	}
 
-	app2.use(async ctx => {
+	app1.use(async (ctx, next) => {
+		await next();
+
 		ctx.status = 301;
 		ctx.redirect('https://'+ctx.accept.headers.host+ctx.req.url);
 	});
 
-	http2.createServer(getPems(), app.callback()).listen(443);
+	http.createServer(app1.callback()).listen(80);
 
-	http.createServer(app2.callback()).listen(80);
+	http2.createServer(getPems(), app2.callback()).listen(443);
 
 	try {
 		let env = process.env,
