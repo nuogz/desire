@@ -18,10 +18,10 @@ let getPems = () => {
 };
 
 module.exports = () => {
-	let http = require('http'), http2 = require('http2'),
+	let http1 = require('http'), http2 = require('http2'), socketIO = require('socket.io'),
 		Koa = require('koa'), Router = require('koa-router'),
 		mount = require('koa-mount'), static = require('koa-static'),
-		app2 = new Koa(), app1 = new Koa();
+		app1 = new Koa(), app2 = new Koa(), sio = new socketIO();
 
 	let subs = {};
 
@@ -31,7 +31,6 @@ module.exports = () => {
 	app2.use(require('koa-compress')({ threshold: 2048, flush: require('zlib').Z_SYNC_FLUSH }));
 	app2.use(require('koa-bodyparser')());
 
-
 	let paths = fs.readdirSync(path.join(_d, 'serv'));
 
 	for(let p of paths) {
@@ -40,10 +39,10 @@ module.exports = () => {
 			app = conf.http1 ? app1 : app2;
 
 		let $ = subs[p] = {
-			pa: function(paths) {
+			pa: (paths) => {
 				return path.join.apply(this, [_d, 'serv', p].concat(paths.split('/')));
 			},
-			rq: function(paths, reload, repath) {
+			rq: (paths, reload, repath) => {
 				let pathRequire = path.join.apply(this, [_d, 'serv', p].concat(paths.split('/')));
 
 				if(repath) return pathRequire;
@@ -54,8 +53,18 @@ module.exports = () => {
 
 				return (obj instanceof Function) ? obj($) : obj;
 			},
-			st: function(path) {
+			st: (path) => {
 				app.use(mount(conf.pathServ, static(path)));
+			},
+			io: (handler) => {
+				sio.on('connection', (socket) => {
+					let handles = handler((event, ...args) => {
+						socket.emit(`${p}-${event}`, ...args);
+					});
+
+					for(let event in handles)
+						socket.on(`${p}-${event}`, handles[event]);
+				});
 			},
 			conf: conf,
 			koa: koa
@@ -67,6 +76,10 @@ module.exports = () => {
 		_l('subServer', p, 'loaded, path is', conf.pathServ);
 	}
 
+	sio.on('connection', (socket) => {
+		socket.emit('ready');
+	});
+
 	app1.use(async (ctx, next) => {
 		await next();
 
@@ -74,9 +87,13 @@ module.exports = () => {
 		ctx.redirect('https://'+ctx.accept.headers.host+ctx.req.url);
 	});
 
-	http.createServer(app1.callback()).listen(80);
+	let serv1 = http1.createServer(app1.callback()),
+		serv2 = http2.createServer(getPems(), app2.callback());
 
-	http2.createServer(getPems(), app2.callback()).listen(443);
+	sio.attach(serv2);
+
+	serv1.listen(80);
+	serv2.listen(443);
 
 	try {
 		let env = process.env,
