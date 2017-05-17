@@ -10,4 +10,5 @@ module.exports = () => {
 
 	global.CleanCSS = require('clean-css');
 	global.UglifyJS = require('uglify-js');
+	global.Request = require('request');
 };
