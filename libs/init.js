@@ -1,4 +1,4 @@
-module.exports = () => {
+module.exports = async() => {
 	global.fs = require('fs');
 	global.path = require('path');
 	global.qs = require('querystring');

@@ -1,3 +1,8 @@
-require('./libs/init')();
+global.Promise = require('bluebird');
 
-require('./libs/server')();
+(async() => {
+	// await require('./libs/init')();
+	// await require('./libs/server')();
+	let db = await require('./libs/db')();
+	true;
+})();

@@ -17,7 +17,7 @@ let getPems = () => {
 	return result;
 };
 
-module.exports = () => {
+module.exports = async() => {
 	let http1 = require('http'), http2 = require('http2'), socketIO = require('socket.io'),
 		Koa = require('koa'), Router = require('koa-router'),
 		mount = require('koa-mount'), static = require('koa-static'),
@@ -39,10 +39,10 @@ module.exports = () => {
 			app = conf.http1 ? app1 : app2;
 
 		let $ = subs[p] = {
-			pa: (paths) => {
+			pa: async(paths) => {
 				return path.join.apply(this, [_d, 'serv', p].concat(paths.split('/')));
 			},
-			rq: (paths, reload, repath) => {
+			rq: async(paths, reload, repath) => {
 				let pathRequire = path.join.apply(this, [_d, 'serv', p].concat(paths.split('/')));
 
 				if(repath) return pathRequire;
@@ -53,12 +53,12 @@ module.exports = () => {
 
 				return (obj instanceof Function) ? obj($) : obj;
 			},
-			st: (path) => {
+			st: async(path) => {
 				app.use(mount(conf.pathServ, static(path)));
 			},
-			io: (handler) => {
-				sio.on('connection', (socket) => {
-					let handles = handler((event, ...args) => {
+			io: async(handler) => {
+				sio.on('connection', async(socket) => {
+					let handles = await handler((event, ...args) => {
 						socket.emit(`${p}-${event}`, ...args);
 					});
 
@@ -70,17 +70,21 @@ module.exports = () => {
 			koa: koa
 		};
 
+		if(conf.db) {
+			$.db = await require(path.join(_d, 'libs', 'db'))(conf.db);
+		}
+
 		require(path.join(_d, 'serv', p))($, router);
 		app.use(router.routes());
 
 		_l('subServer', p, 'loaded, path is', conf.pathServ);
 	}
 
-	sio.on('connection', (socket) => {
+	sio.on('connection', async(socket) => {
 		socket.emit('ready');
 	});
 
-	app1.use(async (ctx, next) => {
+	app1.use(async(ctx, next) => {
 		await next();
 
 		ctx.status = 301;
