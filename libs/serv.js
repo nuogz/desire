@@ -21,6 +21,7 @@ module.exports = async() => {
 	let http1 = require('http'), http2 = require('http2'), socketIO = require('socket.io'),
 		Koa = require('koa'), Router = require('koa-router'),
 		mount = require('koa-mount'), static = require('koa-static'),
+		getDB = require(path.join(_d, 'libs', 'db')),
 		app1 = new Koa(), app2 = new Koa(), sio = new socketIO();
 
 	let subs = {};
@@ -58,7 +59,7 @@ module.exports = async() => {
 			},
 			io: async(handler) => {
 				sio.on('connection', async(socket) => {
-					let handles = await handler((event, ...args) => {
+					let handles = await handler(async(event, ...args) => {
 						socket.emit(`${p}-${event}`, ...args);
 					});
 
@@ -70,11 +71,10 @@ module.exports = async() => {
 			koa: koa
 		};
 
-		if(conf.db) {
-			$.db = await require(path.join(_d, 'libs', 'db'))(conf.db);
-		}
+		if(conf.db)
+			$.db = await getDB(conf.db);
 
-		require(path.join(_d, 'serv', p))($, router);
+		await require(path.join(_d, 'serv', p))($, router);
 		app.use(router.routes());
 
 		_l('subServer', p, 'loaded, path is', conf.pathServ);

@@ -2,16 +2,19 @@ let connect;
 
 module.exports = async(dbname) => {
 	if(!connect)
-		connect = await require('mongodb').MongoClient.connect('mongodb://localhost:27017/');
+		connect = await require('mongodb').MongoClient.connect('mongodb://127.0.0.1:5211/');
 
-	let coll = connect.db(dbname);
+	let db = connect.db(dbname);
 
-	return async() => {
-		return {
-			find: async (query) => {
-				return coll.find(query);
-			}
+	return {
+		coll: async(collname) => {
+			let coll = db.collection(collname);
 
+			return {
+				find: async(query) => {
+					return coll.find(query);
+				}
+			};
 		}
 	};
 };
