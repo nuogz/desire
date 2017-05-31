@@ -35,8 +35,18 @@ module.exports = async() => {
 	let paths = fs.readdirSync(path.join(_d, 'serv'));
 
 	for(let p of paths) {
-		let conf = require(path.join(_d, 'serv', p, 'conf.json')),
-			koa = new Koa(), router = Router({ prefix: conf.pathServ }),
+
+		let conf;
+
+		try {
+			conf = require(path.join(_d, 'serv', p, 'conf.json'));
+
+		}
+		catch(e) {
+			continue;
+		}
+
+		let koa = new Koa(), router = Router({ prefix: conf.pathServ }),
 			app = conf.http1 ? app1 : app2;
 
 		let $ = subs[p] = {
@@ -60,11 +70,11 @@ module.exports = async() => {
 			io: async(handler) => {
 				sio.on('connection', async(socket) => {
 					let handles = await handler(async(event, ...args) => {
-						socket.emit(`${p}-${event}`, ...args);
+						socket.emit(`${conf.pathServ.replace(/\//g,'')}-${event}`, ...args);
 					});
 
 					for(let event in handles)
-						socket.on(`${p}-${event}`, handles[event]);
+						socket.on(`${conf.pathServ.replace(/\//g,'')}-${event}`, handles[event]);
 				});
 			},
 			conf: conf,
