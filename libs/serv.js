@@ -40,7 +40,7 @@ module.exports = async() => {
 
 		try {
 			conf = require(path.join(_d, 'serv', p, 'conf.json'));
-
+			if(!conf.pathServ) throw 1;
 		}
 		catch(e) {
 			continue;
