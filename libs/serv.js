@@ -91,6 +91,8 @@ module.exports = async() => {
 	}
 
 	sio.on('connection', async(socket) => {
+		socket.on('ready', () => socket.emit('ready'));
+
 		socket.emit('ready');
 	});
 
