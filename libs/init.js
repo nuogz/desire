@@ -4,7 +4,9 @@ module.exports = async() => {
 	global.qs = require('querystring');
 	global.URL = require('url');
 
+	global.replaceStream = require('replacestream');
+
 	global._c = console;
-	global._l = _c.log;
+	global.L = _c.log;
 	global._d = path.join(__dirname, '..');
 };

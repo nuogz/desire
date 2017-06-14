@@ -64,8 +64,8 @@ module.exports = async() => {
 
 				return (obj instanceof Function) ? obj($) : obj;
 			},
-			st: async(path) => {
-				app.use(mount(conf.pathServ, static(path)));
+			st: async(path, option) => {
+				app.use(mount(conf.pathServ, static(path, option)));
 			},
 			io: async(handler) => {
 				sio.on('connection', async(socket) => {
@@ -87,7 +87,7 @@ module.exports = async() => {
 		await require(path.join(_d, 'serv', p))($, router);
 		app.use(router.routes());
 
-		_l('subServer', p, 'loaded, path is', conf.pathServ);
+		L('subServer', p, 'loaded, path is', conf.pathServ);
 	}
 
 	sio.on('connection', async(socket) => {
@@ -121,5 +121,5 @@ module.exports = async() => {
 	}
 	catch(e) { true; }
 
-	_l('website started');
+	L('website started');
 };

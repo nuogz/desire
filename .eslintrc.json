@@ -17,7 +17,7 @@
 	},
 	"globals": {
 		"_c": true,
-		"_l": true,
+		"L": true,
 		"_d": true,
 
 		"fs": true,
