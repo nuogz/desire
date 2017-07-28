@@ -20,15 +20,18 @@ let getPems = () => {
 module.exports = async() => {
 	let http1 = require('http'), http2 = require('http2'), socketIO = require('socket.io'),
 		Koa = require('koa'), Router = require('koa-router'),
-		mount = require('koa-mount'), static = require('koa-static'),
+		mount = require('koa-mount'), static = require('koa-static'), favicon = require('koa-favicon'),
 		getDB = require(path.join(_d, 'libs', 'db')),
 		app1 = new Koa(), app2 = new Koa(), sio = new socketIO();
 
 	let subs = {};
 
+	app1.use(favicon(path.join(_d, 'favicon.ico')));
 	app1.use(require('koa-compress')({ threshold: 2048, flush: require('zlib').Z_SYNC_FLUSH }));
 	app1.use(require('koa-bodyparser')());
 
+	app2.use(favicon(path.join(_d, 'favicon.ico')));
+	app2.use(require('koa-compress')({ threshold: 2048, flush: require('zlib').Z_SYNC_FLUSH }));
 	app2.use(require('koa-compress')({ threshold: 2048, flush: require('zlib').Z_SYNC_FLUSH }));
 	app2.use(require('koa-bodyparser')());
 
