@@ -107,7 +107,7 @@ module.exports = async() => {
 	});
 
 	let serv1 = http1.createServer(app1.callback()),
-		serv2 = http2.createServer(getPems(), app2.callback());
+		serv2 = http2.createSecureServer(getPems(), app2.callback());
 
 	sio.attach(serv2);
 
