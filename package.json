@@ -11,7 +11,7 @@
   "author": "DanoR",
   "license": "ISC",
   "dependencies": {
-    "bluebird": "^3.5.0",
+    "bluebird": "^3.5.1",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",
     "koa-compress": "^2.0.0",
@@ -19,27 +19,27 @@
     "koa-mount": "^3.0.0",
     "koa-router": "^7.2.1",
     "koa-static": "^3.0.0",
-    "mongodb": "^2.2.31",
-    "replacestream": "^4.0.2",
-    "socket.io": "^2.0.3"
+    "mongodb": "^2.2.33",
+    "replacestream": "^4.0.3",
+    "socket.io": "^2.0.4"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.0",
+    "babel-preset-env": "^1.6.1",
     "css-loader": "^0.28.7",
     "file-loader": "^0.11.2",
     "html-webpack-plugin": "^2.30.1",
     "style-loader": "^0.18.2",
     "url-loader": "^0.5.9",
-    "vue": "^2.4.2",
+    "vue": "^2.5.2",
     "vue-dynamic": "0.0.4",
     "vue-html-loader": "^1.2.4",
-    "vue-loader": "^13.0.4",
-    "vue-style-loader": "^3.0.1",
-    "vue-template-compiler": "^2.4.2",
-    "webpack": "^3.5.5"
+    "vue-loader": "^13.3.0",
+    "vue-style-loader": "^3.0.3",
+    "vue-template-compiler": "^2.5.2",
+    "webpack": "^3.8.1"
   }
 }
