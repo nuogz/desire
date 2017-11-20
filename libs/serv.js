@@ -35,12 +35,12 @@ module.exports = async() => {
 	app2.use(require('koa-compress')({ threshold: 2048, flush: require('zlib').Z_SYNC_FLUSH }));
 	app2.use(require('koa-bodyparser')());
 
-	app1.use(helmet(helmet.hsts({
+	app1.use(helmet.hsts({
 		maxAge: 15768001
-	})));
-	app2.use(helmet(helmet.hsts({
+	}));
+	app2.use(helmet.hsts({
 		maxAge: 15768001
-	})));
+	}));
 
 	let paths = fs.readdirSync(path.join(_d, 'serv'));
 
