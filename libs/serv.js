@@ -35,6 +35,9 @@ module.exports = async() => {
 	app2.use(require('koa-compress')({ threshold: 2048, flush: require('zlib').Z_SYNC_FLUSH }));
 	app2.use(require('koa-bodyparser')());
 
+	app1.use(helmet(helmet.hsts({
+		maxAge: 15768001
+	})));
 	app2.use(helmet(helmet.hsts({
 		maxAge: 15768001
 	})));
