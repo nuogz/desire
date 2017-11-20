@@ -19,7 +19,7 @@ let getPems = () => {
 
 module.exports = async() => {
 	let http1 = require('http'), http2 = require('http2'), socketIO = require('socket.io'),
-		Koa = require('koa'), Router = require('koa-router'),
+		Koa = require('koa'), Router = require('koa-router'), helmet = require('koa-helmet'),
 		mount = require('koa-mount'), static = require('koa-static'), favicon = require('koa-favicon'),
 		getDB = require(path.join(_d, 'libs', 'db')),
 		app1 = new Koa(), app2 = new Koa(), sio = new socketIO();
@@ -34,6 +34,10 @@ module.exports = async() => {
 	app2.use(require('koa-compress')({ threshold: 2048, flush: require('zlib').Z_SYNC_FLUSH }));
 	app2.use(require('koa-compress')({ threshold: 2048, flush: require('zlib').Z_SYNC_FLUSH }));
 	app2.use(require('koa-bodyparser')());
+
+	app2.use(helmet(helmet.hsts({
+		maxAge: 15768001
+	})));
 
 	let paths = fs.readdirSync(path.join(_d, 'serv'));
 
