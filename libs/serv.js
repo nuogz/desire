@@ -91,8 +91,15 @@ module.exports = async() => {
 			koa: koa
 		};
 
-		if(conf.db)
-			$.db = await getDB(conf.db);
+		if(conf.db) {
+			let auth = require(path.join(_d, 'serv', p, '.auth.json'));
+
+			$.db = await getDB({
+				name: conf.db,
+				user: auth.user,
+				pswd: auth.pswd
+			});
+		}
 
 		await require(path.join(_d, 'serv', p))($, router);
 		app.use(router.routes());
