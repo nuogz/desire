@@ -95,7 +95,9 @@ module.exports = async() => {
 			let auth = require(path.join(_d, 'serv', p, '.auth.json'));
 
 			$.db = await getDB({
-				name: conf.db,
+				dest: auth.dest || '127.0.0.1',
+				port: auth.port || 5211,
+				name: auth.name,
 				user: auth.user,
 				pswd: auth.pswd
 			});

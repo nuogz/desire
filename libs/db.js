@@ -2,7 +2,7 @@ module.exports = async(dbinfo) => {
 	let connect;
 
 	if(!connect) {
-		connect = await require('mongodb').MongoClient.connect(`mongodb://${dbinfo.user}:${dbinfo.pswd}@127.0.0.1:5211/${dbinfo.name}`);
+		connect = await require('mongodb').MongoClient.connect(`mongodb://${dbinfo.user}:${dbinfo.pswd}@${dbinfo.dest}:${dbinfo.port}/${dbinfo.name}`);
 
 		delete dbinfo.user;
 		delete dbinfo.pswd;
