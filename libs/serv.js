@@ -3,14 +3,14 @@ let getPems = () => {
 
 	try {
 		result = {
-			key: fs.readFileSync('/etc/letsencrypt/live/danor.top/privkey.pem'),
-			cert: fs.readFileSync('/etc/letsencrypt/live/danor.top/fullchain.pem')
+			key: fs.readFileSync('/root/.ssh/multi/domain-key.pem'),
+			cert: fs.readFileSync('/root/.ssh/multi/domain-crt.pem')
 		};
 	}
 	catch(e) {
 		result = {
-			key: fs.readFileSync('D:/Runtime/Pem/privkey.pem'),
-			cert: fs.readFileSync('D:/Runtime/Pem/fullchain.pem')
+			key: fs.readFileSync('D:/Runtime/Pem/multi/domain-key.txt'),
+			cert: fs.readFileSync('D:/Runtime/Pem/multi/domain-crt.txt')
 		};
 	}
 
