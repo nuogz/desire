@@ -5,27 +5,36 @@
 	},
 	"extends": "eslint:recommended",
 	"parserOptions": {
-		"ecmaVersion": 8
+		"ecmaVersion": 8,
+		"sourceType": "script"
 	},
 	"rules": {
-		"indent": [ 1, "tab" ],
+		"indent": [ 2, "tab", { "ignoreComments": true, "SwitchCase": 1 } ],
 		"linebreak-style": [ 2, "windows" ],
 		"quotes": [ 2, "single" ],
 		"semi": [ 2, "always" ],
-		"no-unused-vars": [ 1, { "vars": "all", "args": "after-used" } ],
-		"no-console": [ 1 ]
+		"no-unused-vars": [ 2, { "vars": "all", "args": "after-used" } ],
+		"no-console": [ 2 ],
+		"no-var": [ 2 ]
 	},
 	"globals": {
-		"_c": true,
+		"_fs": true,
+		"_pa": true,
+		"_qs": true,
+		"_ul": true,
+		"_os": true,
+		"_cr": true,
+
+		"G": true,
+
+		"J": true,
+		"JC": true,
+		"JD": true,
+
 		"L": true,
-		"_d": true,
+		"LE": true,
 
-		"fs": true,
-		"path": true,
-		"qs": true,
-		"URL": true,
-
-		"CleanCSS": true,
-		"UglifyJS": true
+		"E": true,
+		"P": true
 	}
 }

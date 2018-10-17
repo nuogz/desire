@@ -1,144 +1,134 @@
-let getPems = () => {
-	let result;
-
-	try {
-		result = {
-			key: fs.readFileSync('/root/.ssh/multi/domain-key.pem'),
-			cert: fs.readFileSync('/root/.ssh/multi/domain-crt.pem')
-		};
-	}
-	catch(e) {
-		result = {
-			key: fs.readFileSync('D:/Runtime/Pem/multi/domain-key.txt'),
-			cert: fs.readFileSync('D:/Runtime/Pem/multi/domain-crt.txt')
-		};
-	}
-
-	return result;
+let getPems = (pems) => {
+	// {
+	// 	key: J(configPath, '..', value.pems.key),
+	// 	cert: J(configPath, '..', value.pems.cert)
+	// };
+	return {
+		allowHTTP1: true,
+		key: _fs.readFileSync(pems.key),
+		cert: _fs.readFileSync(pems.cert)
+	};
 };
 
-module.exports = async() => {
-	let http1 = require('http'), http2 = require('http2'), socketIO = require('socket.io'),
-		Koa = require('koa'), Router = require('koa-router'), helmet = require('koa-helmet'),
-		mount = require('koa-mount'), static = require('koa-static'), favicon = require('koa-favicon'),
-		getDB = require(path.join(_d, 'libs', 'db')),
-		app1 = new Koa(), app2 = new Koa(), sio = new socketIO();
+module.exports = async function(configServ) {
+	// 模块引用
+	let http1 = require('http');
+	let http2 = require('http2');
 
-	let subs = {};
+	let Koa = require('koa');
 
-	app1.use(favicon(path.join(_d, 'favicon.ico')));
-	app1.use(require('koa-compress')({ threshold: 2048, flush: require('zlib').Z_SYNC_FLUSH }));
-	app1.use(require('koa-bodyparser')());
+	let Router = require('koa-router');
+	let Helmet = require('koa-helmet');
+	let Mount = require('koa-mount');
+	let Static = require('koa-static');
+	let Favicon = require('koa-favicon');
 
-	app2.use(favicon(path.join(_d, 'favicon.ico')));
-	app2.use(require('koa-compress')({ threshold: 2048, flush: require('zlib').Z_SYNC_FLUSH }));
-	app2.use(require('koa-compress')({ threshold: 2048, flush: require('zlib').Z_SYNC_FLUSH }));
-	app2.use(require('koa-bodyparser')());
+	let serv = new Koa();
 
-	app1.use(helmet.hsts({
-		maxAge: 15768001
-	}));
-	app2.use(helmet.hsts({
-		maxAge: 15768001
-	}));
+	// zlib压缩
+	serv.use(require('koa-compress')({ threshold: 2048, flush: require('zlib').Z_SYNC_FLUSH }));
 
-	let paths = fs.readdirSync(path.join(_d, 'serv'));
+	// 请求参数解析
+	serv.use(require('koa-bodyparser')());
+	// 请求参数解析2，将get和post的参数合并到raw参数中
+	serv.use(async function(ctx, next) {
+		let raw = ctx.raw || {};
 
-	for(let p of paths) {
-
-		let conf;
-
-		try {
-			conf = require(path.join(_d, 'serv', p, 'conf.json'));
-			if(!conf.pathServ) throw 1;
-		}
-		catch(e) {
-			continue;
+		if(ctx.request && ctx.request.body) {
+			for(let key in ctx.request.body) {
+				raw[key] = ctx.request.body[key];
+			}
 		}
 
-		let koa = new Koa(), router = Router({ prefix: conf.pathServ }),
-			app = conf.http1 ? app1 : app2;
-
-		let $ = subs[p] = {
-			pa: async(paths) => {
-				return path.join.apply(this, [_d, 'serv', p].concat(paths.split('/')));
-			},
-			rq: async(paths, reload, repath) => {
-				let pathRequire = path.join.apply(this, [_d, 'serv', p].concat(paths.split('/')));
-
-				if(repath) return pathRequire;
-
-				if(reload) delete require.cache[require.resolve(pathRequire)];
-
-				let obj = require(pathRequire);
-
-				return (obj instanceof Function) ? obj($) : obj;
-			},
-			st: async(path, option) => {
-				app.use(mount(conf.pathServ, static(path, option)));
-			},
-			io: async(handler) => {
-				sio.on('connection', async(socket) => {
-					let handles = await handler(async(event, ...args) => {
-						socket.emit(`${conf.pathServ.replace(/\//g,'')}-${event}`, ...args);
-					});
-
-					for(let event in handles)
-						socket.on(`${conf.pathServ.replace(/\//g,'')}-${event}`, handles[event]);
-				});
-			},
-			conf: conf,
-			koa: koa
-		};
-
-		if(conf.db) {
-			let auth = require(path.join(_d, 'serv', p, '.auth.json'));
-
-			$.db = await getDB({
-				dest: auth.dest || '127.0.0.1',
-				port: auth.port || 5211,
-				name: auth.name,
-				user: auth.user,
-				pswd: auth.pswd
-			});
+		if(ctx.query) {
+			for(let key in ctx.query) {
+				raw[key] = ctx.query[key];
+			}
 		}
 
-		await require(path.join(_d, 'serv', p))($, router);
-		app.use(router.routes());
+		ctx.raw = raw;
 
-		L('subServer', p, 'loaded, path is', conf.pathServ);
-	}
-
-	sio.on('connection', async(socket) => {
-		socket.on('ready', () => socket.emit('ready'));
-
-		socket.emit('ready');
-	});
-
-	app1.use(async(ctx, next) => {
 		await next();
-
-		ctx.status = 301;
-		ctx.redirect('https://'+ctx.accept.headers.host+ctx.req.url);
 	});
 
-	let serv1 = http1.createServer(app1.callback()),
-		serv2 = http2.createSecureServer(getPems(), app2.callback());
-
-	sio.attach(serv2);
-
-	serv1.listen(80);
-	serv2.listen(443);
-
-	try {
-		let env = process.env,
-			uid = parseInt(env['SUDO_UID'] || process.getuid(), 10),
-			gid = parseInt(env['SUDO_GID'] || process.getgid(), 10);
-
-		process.setgid(gid);
-		process.setuid(uid);
+	// cors请求头
+	if(configServ.serv.cors) {
+		serv.use(require('@koa/cors')());
 	}
-	catch(e) { true; }
+	// hsts请求头
+	if(configServ.serv.http2) {
+		serv.use(Helmet.hsts({ maxAge: 15768001 }));
+	}
 
-	L('website started');
+	let dashServ = {
+		serv,
+		addApp: async function(nameApp, pathApp, configApp) {
+			// 创建子Koa和子路由器
+			let app = new Koa();
+			let router = Router({ prefix: configApp.serv.path || nameApp });
+			// 子应用的接口变量$
+			let $ = {
+				// 绝对路径转换
+				J: function(...paths) {
+					return J(pathApp, ...paths);
+				},
+				// 网站图标
+				fv: function(pathIcon) {
+					app.use(Favicon(pathIcon));
+				},
+				// 绝对路径引用，js文件、json文件，支持重新加载
+				rq: function(...paths) {
+					let pathRequire = J(pathApp, ...paths);
+
+					return require(pathRequire);
+				},
+				// 挂载静态目录
+				st: async function(path, option, prefix) {
+					serv.use(Mount(prefix || nameApp, Static(path, option)));
+				},
+				// 常用变量
+				C: configApp,
+				G: G[nameApp],
+				// 对子应用透明 配置和子koa，方便高级开发
+				E: E[nameApp] = {},
+				serv,
+				app,
+				router,
+			};
+			// 挂载子应用
+			await require(pathApp)($, router);
+			serv.use(router.routes());
+
+			G.serv.info(`加载 [应用]{${nameApp}} 成功`);
+
+			return 1;
+		},
+		start: function() {
+			// 启动服务器
+			let httpServ;
+
+			if(configServ.serv.http2) {
+				httpServ = http2.createSecureServer(getPems(), serv.callback());
+			}
+			else {
+				httpServ = http1.createServer(serv.callback());
+			}
+			// 监听端口
+			httpServ.listen(configServ.serv.port, configServ.serv.host);
+
+			try {
+				let env = process.env,
+					uid = parseInt(env['SUDO_UID'] || process.getuid(), 10),
+					gid = parseInt(env['SUDO_GID'] || process.getgid(), 10);
+
+				process.setgid(gid);
+				process.setuid(uid);
+			}
+			catch(e) { true; }
+
+			G.serv.info(`-------------- Serv 启动完成{${configServ.serv.host}}{${configServ.serv.port}} --------------`);
+		}
+	};
+
+	return dashServ;
 };

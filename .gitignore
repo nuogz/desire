@@ -1,8 +1,12 @@
-#Visual Studio Code
+#Visual Studio Code Debug
 .vscode
 
 #Node Modules Folder
 node_modules
 
-#Sub Serv
-serv
+#Logs
+logs
+
+#Config
+config.js
+config.json

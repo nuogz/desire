@@ -1,27 +1,27 @@
 {
-  "name": "danor.top",
-  "version": "0.0.1",
-  "description": "Simple server for my website based on koa.js",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": "zheung/danor.top",
-  "keywords": [],
-  "author": "DanoR",
-  "license": "ISC",
-  "dependencies": {
-    "bluebird": "^3.5.1",
-    "koa": "^2.4.1",
-    "koa-bodyparser": "^4.2.0",
-    "koa-compress": "^2.0.0",
-    "koa-favicon": "^2.0.0",
-    "koa-helmet": "^3.3.0",
-    "koa-mount": "^3.0.0",
-    "koa-router": "^7.3.0",
-    "koa-static": "^3.0.0",
-    "mongodb": "^2.2.33",
-    "replacestream": "^4.0.3",
-    "socket.io": "^2.0.4"
-  }
+	"name": "desire",
+	"version": "2.0.0",
+	"description": "server framework based on koa.js",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": "zheung/danor.top",
+	"keywords": [],
+	"author": "DanoR",
+	"license": "ISC",
+	"dependencies": {
+		"chalk": "^2.4.1",
+		"commander": "^2.19.0",
+		"koa": "^2.4.1",
+		"koa-bodyparser": "^4.2.0",
+		"koa-compress": "^2.0.0",
+		"koa-favicon": "^2.0.0",
+		"koa-helmet": "^3.3.0",
+		"koa-mount": "^3.0.0",
+		"koa-router": "^7.3.0",
+		"koa-static": "^3.0.0",
+		"log4js": "^3.0.6",
+		"moment": "^2.22.2"
+	}
 }
