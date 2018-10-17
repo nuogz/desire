@@ -57,14 +57,13 @@ module.exports = async function(configServ) {
 	}
 	// hsts请求头
 	if(configServ.serv.http2) {
-		serv.use(Helmet.hsts({ maxAge: 15768001 }));
+		serv.use(Helmet());
 	}
 
 	let dashServ = {
 		serv,
 		addApp: async function(nameApp, pathApp, configApp) {
-			// 创建子Koa和子路由器
-			let app = new Koa();
+			// 创建子路由器
 			let router = Router({ prefix: configApp.serv.path || nameApp });
 			// 子应用的接口变量$
 			let $ = {
@@ -74,7 +73,7 @@ module.exports = async function(configServ) {
 				},
 				// 网站图标
 				fv: function(pathIcon) {
-					app.use(Favicon(pathIcon));
+					serv.use(Favicon(pathIcon));
 				},
 				// 绝对路径引用，js文件、json文件，支持重新加载
 				rq: function(...paths) {
@@ -92,8 +91,7 @@ module.exports = async function(configServ) {
 				// 对子应用透明 配置和子koa，方便高级开发
 				E: E[nameApp] = {},
 				serv,
-				app,
-				router,
+				router
 			};
 			// 挂载子应用
 			await require(pathApp)($, router);
