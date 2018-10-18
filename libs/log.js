@@ -47,7 +47,7 @@ let config = {
 		},
 		file: {
 			type: 'multiFile',
-			base: 'logs/',
+			base: JD('logs'),
 			property: 'categoryName',
 			extension: '.log',
 			maxLogSize: 20971520,
