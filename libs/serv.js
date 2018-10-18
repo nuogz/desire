@@ -83,7 +83,7 @@ module.exports = async function(configServ) {
 				},
 				// 挂载静态目录
 				st: async function(path, option, prefix) {
-					serv.use(Mount(prefix || '/'+nameApp, Static(path, option)));
+					serv.use(Mount(prefix || configApp.serv.path || '/'+nameApp, Static(path, option)));
 				},
 				// 常用变量
 				C: configApp,
