@@ -25,6 +25,16 @@ module.exports = async function(configServ) {
 
 	let serv = new Koa();
 
+	// 创建服务器
+	let httpServ;
+
+	if(configServ.serv.http2) {
+		httpServ = http2.createSecureServer(getPems());
+	}
+	else {
+		httpServ = http1.createServer();
+	}
+
 	// zlib压缩
 	serv.use(require('koa-compress')({ threshold: 2048, flush: require('zlib').Z_SYNC_FLUSH }));
 
@@ -91,6 +101,7 @@ module.exports = async function(configServ) {
 				// 对子应用透明 配置和子koa，方便高级开发
 				E: E[nameApp] = {},
 				serv,
+				httpServ,
 				router
 			};
 			// 挂载子应用
@@ -102,15 +113,8 @@ module.exports = async function(configServ) {
 			return 1;
 		},
 		start: function() {
-			// 启动服务器
-			let httpServ;
-
-			if(configServ.serv.http2) {
-				httpServ = http2.createSecureServer(getPems(), serv.callback());
-			}
-			else {
-				httpServ = http1.createServer(serv.callback());
-			}
+			// 挂载服务
+			httpServ = httpServ.on('request', serv.callback());
 			// 监听端口
 			httpServ.listen(configServ.serv.port, configServ.serv.host);
 
