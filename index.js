@@ -207,6 +207,10 @@ let initServ = async function(lastConfig) {
 			countSuccess += await serv.addApp(nameApp, infoApp.path, infoApp.config);
 		} catch (error) {
 			GG.serv.warn(`加载 [应用]{${infoApp.path}}：错误，${error.message}`);
+
+			if(error.stack) {
+				GG.serv.trace(error.stack);
+			}
 		}
 	}
 
