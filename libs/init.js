@@ -29,5 +29,5 @@ module.exports = async function() {
 	global.JD = function(...paths) { return global.J(P.dir, ...paths); };
 
 	// 初始化日志
-	global.G = require('./log');
+	global.GG = require('./log');
 };

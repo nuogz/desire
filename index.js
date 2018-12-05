@@ -5,7 +5,7 @@ let validPaths = function(rawPaths_) {
 	let result = [];
 
 	if(!rawPaths || !(rawPaths instanceof Array)) {
-		G.serv.error('校验 [应用路径]：错误，参数非数组');
+		GG.serv.error('校验 [应用路径]：错误，参数非数组');
 	}
 
 	for(let path of rawPaths) {
@@ -16,11 +16,11 @@ let validPaths = function(rawPaths_) {
 				result.push(path);
 			}
 			else {
-				G.serv.warn(`校验 [应用路径]{${path}}：失败，路径非文件夹`);
+				GG.serv.warn(`校验 [应用路径]{${path}}：失败，路径非文件夹`);
 			}
 		} catch (error) {
 			if(error.code == 'ENOENT') {
-				G.serv.warn(`校验 [应用路径]{${path}}：失败，路径不存在`);
+				GG.serv.warn(`校验 [应用路径]{${path}}：失败，路径不存在`);
 			}
 			else {
 				throw error;
@@ -55,22 +55,22 @@ let initConfig = async function(configPath, lastConfig, isSkipPath = false) {
 		}
 
 		if(!config) {
-			G.serv.warn(`加载 [配置文件]{${configPath}}：错误，结果为[空]`);
+			GG.serv.warn(`加载 [配置文件]{${configPath}}：错误，结果为[空]`);
 
 			config = undefined;
 		}
 		else if(typeof config != 'object') {
-			G.serv.warn(`加载 [配置文件]{${configPath}}：错误，结果非[对象]`);
+			GG.serv.warn(`加载 [配置文件]{${configPath}}：错误，结果非[对象]`);
 
 			config = undefined;
 		}
 	}
 	catch(error) {
 		if(error.code == 'MODULE_NOT_FOUND') {
-			G.serv.warn(`加载 [配置文件]{${configPath}}：失败，文件不存在`);
+			GG.serv.warn(`加载 [配置文件]{${configPath}}：失败，文件不存在`);
 		}
 		else {
-			G.serv.warn(`加载 [配置文件]{${configPath}}：错误，${error.message}`);
+			GG.serv.warn(`加载 [配置文件]{${configPath}}：错误，${error.message}`);
 		}
 
 		config = undefined;
@@ -122,7 +122,7 @@ let initConfig = async function(configPath, lastConfig, isSkipPath = false) {
 let initParam = async function(lastConfig) {
 	let configPathDefault = JD('./config');
 
-	G.serv.info(`加载 默认[配置文件]{${configPathDefault}}`);
+	GG.serv.info(`加载 默认[配置文件]{${configPathDefault}}`);
 	await initConfig(configPathDefault, lastConfig);
 
 	let commander = require('commander');
@@ -136,13 +136,13 @@ let initParam = async function(lastConfig) {
 	if(commander.config) {
 		let configPath = JC(commander.config);
 
-		G.serv.info(`加载 来自[命令行]的[配置文件]{${configPath}}`);
+		GG.serv.info(`加载 来自[命令行]的[配置文件]{${configPath}}`);
 
 		await initConfig(configPath, lastConfig);
 	}
 
 	if(commander.args.length) {
-		G.serv.info('加载 来自[命令行]的[应用路径]');
+		GG.serv.info('加载 来自[命令行]的[应用路径]');
 
 		lastConfig.path = convertPaths(commander.args, P.cwd);
 	}
@@ -152,7 +152,7 @@ let initParam = async function(lastConfig) {
 	if(lastConfig.path.length == 1) {
 		let configPathApp = J(lastConfig.path[0], 'config');
 
-		G.serv.info(`加载 [唯一应用]{${lastConfig.path[0]}}的[配置文件]`);
+		GG.serv.info(`加载 [唯一应用]{${lastConfig.path[0]}}的[配置文件]`);
 
 		await initConfig(configPathApp, lastConfig, true);
 	}
@@ -160,7 +160,7 @@ let initParam = async function(lastConfig) {
 
 // 加载服务
 let initServ = async function(lastConfig) {
-	G.serv.info('加载 应用的[配置文件]');
+	GG.serv.info('加载 应用的[配置文件]');
 
 	let nameApps = [];
 	let configAppDict = {};
@@ -180,38 +180,38 @@ let initServ = async function(lastConfig) {
 				};
 			}
 			else {
-				G.serv.warn(`加载 [应用配置]{${path}}：跳过，存在相同名称的[应用]`);
+				GG.serv.warn(`加载 [应用配置]{${path}}：跳过，存在相同名称的[应用]`);
 			}
 		}
 	}
 
 	if(!nameApps.length) {
-		G.serv.fatal('启动 [服务器]：失败，缺少有效的[应用路径]');
+		GG.serv.fatal('启动 [服务器]：失败，缺少有效的[应用路径]');
 
 		process.exit(-1);
 	}
 
-	G.serv.info('加载 [日志目录]');
-	await G.appendCatas(nameApps);
+	GG.serv.info('加载 [日志目录]');
+	await GG.appendCatas(nameApps);
 
 	let serv = await require('./libs/serv')(lastConfig);
 
 	let countSuccess = 0;
 
 	for(let nameApp in configAppDict) {
-		G.serv.info(`-------------- Serv 加载[应用]{${nameApp}} --------------`);
+		GG.serv.info(`-------------- Serv 加载[应用]{${nameApp}} --------------`);
 
 		let infoApp = configAppDict[nameApp];
 
 		try {
 			countSuccess += await serv.addApp(nameApp, infoApp.path, infoApp.config);
 		} catch (error) {
-			G.serv.warn(`加载 [应用]{${infoApp.path}}：错误，${error.message}`);
+			GG.serv.warn(`加载 [应用]{${infoApp.path}}：错误，${error.message}`);
 		}
 	}
 
 	if(!countSuccess) {
-		G.serv.fatal('启动 [服务器]：失败，缺少成功加载的[应用]');
+		GG.serv.fatal('启动 [服务器]：失败，缺少成功加载的[应用]');
 
 		process.exit(-1);
 	}
@@ -224,9 +224,9 @@ let initServ = async function(lastConfig) {
 async function welcomeDesire() {
 	try {
 		await require('./libs/init')();
-		G.serv.info('-------------- Serv 加载环境 --------------');
+		GG.serv.info('-------------- Serv 加载环境 --------------');
 
-		G.serv.info('-------------- Serv 加载配置 --------------');
+		GG.serv.info('-------------- Serv 加载配置 --------------');
 
 		let lastConfig = {
 			path: [],
@@ -242,17 +242,17 @@ async function welcomeDesire() {
 
 		await initParam(lastConfig);
 
-		G.serv.info('-------------- Serv 加载服务 --------------');
+		GG.serv.info('-------------- Serv 加载服务 --------------');
 
 		if(!lastConfig.path.length) {
-			G.serv.fatal('启动 [服务器]：失败，缺少有效的[应用路径]');
+			GG.serv.fatal('启动 [服务器]：失败，缺少有效的[应用路径]');
 		}
 		else {
 			initServ(lastConfig);
 		}
 	}
 	catch(e) {
-		G.serv.error(e.message);
+		GG.serv.error(e.message);
 	}
 }
 

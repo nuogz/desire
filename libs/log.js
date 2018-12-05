@@ -73,10 +73,10 @@ module.exports = {
 			log4js.shutdown(function() {
 				log4js.configure(config);
 
-				G.serv = log4js.getLogger('serv');
+				GG.serv = log4js.getLogger('serv');
 
 				for(let cata of catas) {
-					G[cata] = log4js.getLogger(cata);
+					GG[cata] = log4js.getLogger(cata);
 				}
 
 				resolve();

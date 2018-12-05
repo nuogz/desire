@@ -1,8 +1,4 @@
 let getPems = (pems) => {
-	// {
-	// 	key: J(configPath, '..', value.pems.key),
-	// 	cert: J(configPath, '..', value.pems.cert)
-	// };
 	return {
 		allowHTTP1: true,
 		key: _fs.readFileSync(pems.key),
@@ -23,25 +19,25 @@ module.exports = async function(configServ) {
 	let Static = require('koa-static');
 	let Favicon = require('koa-favicon');
 
-	let serv = new Koa();
+	let Serv = new Koa();
 
 	// 创建服务器
-	let httpServ;
+	let RawServ;
 
 	if(configServ.serv.http2) {
-		httpServ = http2.createSecureServer(getPems());
+		RawServ = http2.createSecureServer(getPems());
 	}
 	else {
-		httpServ = http1.createServer();
+		RawServ = http1.createServer();
 	}
 
 	// zlib压缩
-	serv.use(require('koa-compress')({ threshold: 2048, flush: require('zlib').Z_SYNC_FLUSH }));
+	Serv.use(require('koa-compress')({ threshold: 2048, flush: require('zlib').Z_SYNC_FLUSH }));
 
 	// 请求参数解析
-	serv.use(require('koa-bodyparser')());
+	Serv.use(require('koa-bodyparser')());
 	// 请求参数解析2，将get和post的参数合并到raw参数中
-	serv.use(async function(ctx, next) {
+	Serv.use(async function(ctx, next) {
 		let raw = ctx.raw || {};
 
 		if(ctx.request && ctx.request.body) {
@@ -63,15 +59,15 @@ module.exports = async function(configServ) {
 
 	// cors请求头
 	if(configServ.serv.cors) {
-		serv.use(require('@koa/cors')());
+		Serv.use(require('@koa/cors')());
 	}
 	// hsts请求头
 	if(configServ.serv.http2) {
-		serv.use(Helmet());
+		Serv.use(Helmet());
 	}
 
 	let dashServ = {
-		serv,
+		serv: Serv,
 		addApp: async function(nameApp, pathApp, configApp) {
 			// 创建子路由器
 			let router = Router({ prefix: configApp.serv.path || nameApp });
@@ -83,7 +79,7 @@ module.exports = async function(configServ) {
 				},
 				// 网站图标
 				fv: function(pathIcon) {
-					serv.use(Favicon(pathIcon));
+					Serv.use(Favicon(pathIcon));
 				},
 				// 绝对路径引用，js文件、json文件，支持重新加载
 				rq: function(...paths) {
@@ -93,30 +89,30 @@ module.exports = async function(configServ) {
 				},
 				// 挂载静态目录
 				st: async function(path, option, prefix) {
-					serv.use(Mount(prefix || configApp.serv.path || '/'+nameApp, Static(path, option)));
+					Serv.use(Mount(prefix || configApp.serv.path || '/'+nameApp, Static(path, option)));
 				},
 				// 常用变量
 				C: configApp,
-				G: G[nameApp],
+				G: GG[nameApp],
 				// 对子应用透明 配置和子koa，方便高级开发
 				E: E[nameApp] = {},
-				serv,
-				httpServ,
-				router
+				Serv,
+				RawServ,
+				Router
 			};
 			// 挂载子应用
 			await require(pathApp)($, router);
-			serv.use(router.routes());
+			Serv.use(router.routes());
 
-			G.serv.info(`加载 [应用]{${nameApp}} 成功`);
+			GG.serv.info(`加载 [应用]{${nameApp}} 成功`);
 
 			return 1;
 		},
 		start: function() {
 			// 挂载服务
-			httpServ = httpServ.on('request', serv.callback());
+			RawServ = RawServ.on('request', Serv.callback());
 			// 监听端口
-			httpServ.listen(configServ.serv.port, configServ.serv.host);
+			RawServ.listen(configServ.serv.port, configServ.serv.host);
 
 			try {
 				let env = process.env,
@@ -128,7 +124,7 @@ module.exports = async function(configServ) {
 			}
 			catch(e) { true; }
 
-			G.serv.info(`-------------- Serv 启动完成{${configServ.serv.host}}{${configServ.serv.port}} --------------`);
+			GG.serv.info(`-------------- Serv 启动完成{${configServ.serv.host}}{${configServ.serv.port}} --------------`);
 		}
 	};
 
