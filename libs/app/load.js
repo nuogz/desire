@@ -16,6 +16,13 @@ module.exports = async function(pathApp, pathLog) {
 
 	C.path.app = pathApp;
 
+	// 配置路径绝对化
+	for(let key in C.path) {
+		if(typeof C.path[key] == 'string') {
+			C.path[key] = R(C.path[key]);
+		}
+	}
+
 	// 应用名称
 	if(!C.name) {
 		C.name = _pa.parse(pathApp).base;

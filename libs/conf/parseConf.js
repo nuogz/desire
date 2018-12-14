@@ -1,15 +1,15 @@
-module.exports = async function(configPath, mainConfig, cata) {
-	let config = await require('./loadConf')(configPath, cata);
+module.exports = async function(confPath, mainConf, cata) {
+	let conf = await require('./loadConf')(confPath, cata);
 
-	if(config.apps instanceof Array) {
-		mainConfig.apps = mainConfig.apps.concat(config.apps);
+	if(conf.apps instanceof Array) {
+		mainConf.apps = mainConf.apps.concat(conf.apps);
 	}
 
-	if(config.path && config.path.log) {
-		mainConfig.path.log = RC(config.path.log);
+	if(conf.path && conf.path.log) {
+		mainConf.path.log = RC(conf.path.log);
 	}
 
-	GG[cata].info(`加载 主[配置]: 路径{${configPath}}`);
+	GG[cata].info(`加载 主[配置]: 路径{${confPath}}`);
 
-	return config;
+	return conf;
 };

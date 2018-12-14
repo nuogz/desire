@@ -1,10 +1,10 @@
-module.exports = async function(paramer, mainConfig) {
+module.exports = async function(paramer, mainConf) {
 	for(let path of paramer.args) {
-		mainConfig.apps.push(RC(path));
+		mainConf.apps.push(RC(path));
 	}
 
 	if(paramer.log) {
-		mainConfig.path.log = RC(paramer.log);
+		mainConf.path.log = RC(paramer.log);
 	}
 
 	GG.log.info('加载 [命令行]');

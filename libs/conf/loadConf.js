@@ -1,34 +1,34 @@
-module.exports = async function(configPath, cata = 'serv') {
-	let config;
+module.exports = async function(confPath, cata = 'serv') {
+	let conf;
 
 	try {
-		config = require(configPath);
+		conf = require(confPath);
 
-		if(typeof config == 'function') {
-			config = await config();
+		if(typeof conf == 'function') {
+			conf = await conf();
 		}
 
-		if(!config) {
-			GG[cata].warn(`加载 [配置文件]{${configPath}}: 错误, 结果为[空]`);
+		if(!conf) {
+			GG[cata].warn(`加载 [配置文件]{${confPath}}: 错误, 结果为[空]`);
 
-			config = undefined;
+			conf = undefined;
 		}
-		else if(typeof config != 'object') {
-			GG[cata].warn(`加载 [配置文件]{${configPath}}: 错误, 结果非[对象]`);
+		else if(typeof conf != 'object') {
+			GG[cata].warn(`加载 [配置文件]{${confPath}}: 错误, 结果非[对象]`);
 
-			config = undefined;
+			conf = undefined;
 		}
 	}
 	catch(error) {
 		if(error.code == 'MODULE_NOT_FOUND') {
-			GG[cata].warn(`加载 [配置文件]{${configPath}}: 失败, 文件不存在`);
+			GG[cata].warn(`加载 [配置文件]{${confPath}}: 失败, 文件不存在`);
 		}
 		else {
-			GG[cata].warn(`加载 [配置文件]{${configPath}}: 错误, ${error.message}`);
+			GG[cata].warn(`加载 [配置文件]{${confPath}}: 错误, ${error.message}`);
 		}
 
-		config = undefined;
+		conf = undefined;
 	}
 
-	return config;
+	return conf;
 };

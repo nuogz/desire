@@ -48,13 +48,13 @@ module.exports = async function() {
 		default: { appenders: [ 'console' ], level: 'all' }
 	};
 
-	let config = {
+	let conf = {
 		appenders,
 		categories,
 		pm2: true
 	};
 
-	log4js.configure(config);
+	log4js.configure(conf);
 
 	let defaultPath = RC('./logs');
 
@@ -76,7 +76,7 @@ module.exports = async function() {
 
 			return new Promise(function(resolve) {
 				log4js.shutdown(function() {
-					log4js.configure(config);
+					log4js.configure(conf);
 
 					GG[cata] = log4js.getLogger(cata);
 
