@@ -1,7 +1,7 @@
 {
 	"name": "desire",
-	"version": "2.0.0",
-	"description": "server framework based on koa.js",
+	"version": "3.0.0",
+	"description": "simple encapsulation based on koa.js",
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
@@ -13,7 +13,7 @@
 	"dependencies": {
 		"chalk": "^2.4.1",
 		"commander": "^2.19.0",
-		"koa": "^2.6.1",
+		"koa": "^2.6.2",
 		"koa-bodyparser": "^4.2.0",
 		"koa-compress": "^2.0.0",
 		"koa-favicon": "^2.0.0",
@@ -22,6 +22,6 @@
 		"koa-router": "^7.3.0",
 		"koa-static": "^3.0.0",
 		"log4js": "^3.0.6",
-		"moment": "^2.22.2"
+		"moment": "^2.23.0"
 	}
 }

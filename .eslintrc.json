@@ -25,16 +25,15 @@
 		"_os": true,
 		"_cr": true,
 
-		"GG": true,
-
-		"J": true,
-		"JC": true,
-		"JD": true,
+		"P": true,
 
 		"L": true,
 		"LE": true,
 
-		"E": true,
-		"P": true
+		"R": true,
+		"RC": true,
+		"RD": true,
+
+		"GG": true
 	}
 }

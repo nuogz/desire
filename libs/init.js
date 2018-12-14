@@ -6,28 +6,24 @@ module.exports = async function() {
 	global._ul = require('url');
 	global._os = require('os');
 	global._cr = require('crypto');
-	// 第三方模块 大写开头的英文单词
 
 	// 常用全局功能 1~2个大写字母
-	global.J = global._pa.resolve;
 	global.L = global.console.log;
 	global.LE = global.console.error;
 
+	global.R = global._pa.resolve;
+
 	global.P = {
+		// 当前工作目录
 		cwd: process.cwd(),
-		dir: J(__dirname, '..')
+		// 程序目录
+		dir: R(__dirname, '..')
 	};
 
-	global.E = {
-		Chalk: require('chalk'),
-		Moment: require('moment')
-	};
+	global.RC = function(...paths) { return global.R(P.cwd, ...paths); };
+	global.RD = function(...paths) { return global.R(P.dir, ...paths); };
 
-	E.Moment.locale('zh-cn');
+	require('moment').locale('zh-cn');
 
-	global.JC = function(...paths) { return global.J(P.cwd, ...paths); };
-	global.JD = function(...paths) { return global.J(P.dir, ...paths); };
-
-	// 初始化日志
-	global.GG = require('./log');
+	await require('./log')();
 };
