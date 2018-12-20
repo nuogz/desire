@@ -1,6 +1,6 @@
 async function welcomeDesire() {
 	try {
-		// 加载环境
+		// 环境
 		await require('./libs/init')();
 
 		// 解析参数
@@ -27,13 +27,13 @@ async function welcomeDesire() {
 		await GG.addCataServ(mainConf.path.log);
 
 		if(mainConf.apps.length) {
-			let text = '\r\n[应用路径]列表:\r\n';
+			let text = '[应用路径]列表:\r\n';
 
 			for(let path of mainConf.apps) {
-				text += path + '\r\n';
+				text += `\t${path}\r\n`;
 			}
 
-			GG.serv.info(text);
+			GG.serv.info(text.replace(/\r\n$/, ''));
 		}
 		else {
 			GG.serv.fatal('启动 [服务器]: 失败, 缺少[应用路径]');

@@ -19,7 +19,7 @@ module.exports = async function(pathApp, pathLog) {
 	// 配置路径绝对化
 	for(let key in C.path) {
 		if(typeof C.path[key] == 'string') {
-			C.path[key] = R(C.path[key]);
+			C.path[key] = R(pathApp, C.path[key]);
 		}
 	}
 
@@ -29,17 +29,19 @@ module.exports = async function(pathApp, pathLog) {
 	}
 
 	// 应用日志
-	let G = await GG.appendCata(C.name, C.path.log);
+	let G = await GG.addCata(C.name, C.path.log);
 
 	try {
 		await loadServ(C, G);
 
-		GG.serv.info(`加载 [应用]{${C.name}}: 成功`);
+		GG.serv.info(`启动 [应用]{${C.name}}: 成功`);
 	} catch (error) {
-		GG.serv.warn(`加载 [应用]{${C.name}}: 错误, 路径{${pathApp}}, 原因: ${error.message}`);
+		GG.serv.warn(`启动 [应用]{${C.name}}: 错误, 路径{${pathApp}}, 原因: ${error.message}`);
 
 		if(error.stack) {
 			GG.serv.trace(error.stack);
 		}
 	}
+
+	GG.log.info('----------------------------');
 };

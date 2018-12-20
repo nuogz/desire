@@ -23,7 +23,13 @@ module.exports = async function() {
 	global.RC = function(...paths) { return global.R(P.cwd, ...paths); };
 	global.RD = function(...paths) { return global.R(P.dir, ...paths); };
 
-	require('moment').locale('zh-cn');
+	global.E = {
+		Moment: require('moment')
+	};
+
+	E.Moment.locale('zh-cn');
+
+	global.rrr = require;
 
 	await require('./log')();
 };

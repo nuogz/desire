@@ -1,17 +1,26 @@
-module.exports = async function({ C, Serv, Koa, Router }) {
+module.exports = async function({ C, G, Serv, Koa, Router }) {
 	// 加载路由
 	Koa.use(Router.routes());
 
 	// 监听请求
-	Serv = Serv.on('request', Koa.callback());
+	Serv.on('request', Koa.callback());
 
 	// 监听错误
 	Serv.on('error', function(error) {
-		GG.log.error(error.message);
+		if(error.code == 'EADDRINUSE') {
+			G.fatal(`监听 [端口]{${C.serv.host}:${C.serv.port}}: 失败, 端口可能已被占用`);
+
+			process.exit();
+		}
+		else {
+			G.error(`[服务器]: 错误, ${error.message}`);
+		}
 	});
 
 	// 监听端口
 	Serv.listen(C.serv.port, C.serv.host);
+
+	G.info(`监听 [端口]{${C.serv.host}:${C.serv.port}}`);
 
 	// 降低权限
 	try {

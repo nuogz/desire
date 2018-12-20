@@ -35,7 +35,7 @@ module.exports = async function(C, G) {
 			return require(R(C.path.app, ...paths));
 		},
 		// 挂载静态目录
-		st: async function(pathStatic, option, prefix) {
+		st: async function(pathStatic, prefix, option) {
 			Koa.use(Mount(prefix, Static(pathStatic, option)));
 		},
 
@@ -50,7 +50,12 @@ module.exports = async function(C, G) {
 	// 通用请求头
 	await parseHead($);
 
-	// 加载子应用
+	// 海港
+	if(C.serv.harb !== false) {
+		await require('../harb')($);
+	}
+
+	// 应用
 	await require(C.path.app)($);
 
 	// 绑定并启动服务
