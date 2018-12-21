@@ -29,7 +29,5 @@ module.exports = async function() {
 
 	E.Moment.locale('zh-cn');
 
-	global.rrr = require;
-
 	await require('./log')();
 };
