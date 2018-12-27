@@ -59,7 +59,7 @@ module.exports = async function() {
 	let defaultPath = RC('./logs');
 
 	global.GG = {
-		addCata: async function(cata, cataPath = defaultPath) {
+		addCata: async function(cata, cataPath = defaultPath, level = 'all') {
 			appenders[cata] = {
 				type: 'multiFile',
 				base: cataPath,
@@ -72,7 +72,7 @@ module.exports = async function() {
 				}
 			};
 
-			categories[cata] = { appenders: [ 'console', cata ], level: 'all' };
+			categories[cata] = { appenders: [ 'console', cata ], level };
 
 			return new Promise(function(resolve) {
 				log4js.shutdown(function() {
@@ -80,14 +80,14 @@ module.exports = async function() {
 
 					GG[cata] = log4js.getLogger(cata);
 
-					GG.log.info(`添加 [日志]分类{${cata}}, 目录{${cataPath}}`);
+					GG.log.info(`加载 [日志]分组{${cata}}, 目录{${cataPath}}`);
 
 					resolve(GG[cata]);
 				});
 			});
 		},
-		addCataServ: async function(cataPath = defaultPath) {
-			await GG.addCata('serv', cataPath);
+		addCataServ: async function(cataPath = defaultPath, level = 'all') {
+			await GG.addCata('serv', cataPath, level);
 
 			defaultPath = cataPath;
 		},

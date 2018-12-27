@@ -15,6 +15,10 @@ module.exports = async function(confPath, mainConf, cata) {
 		mainConf.path.log = RC(_pa.parse(confPath).dir, conf.path.log);
 	}
 
+	if(conf.logLevel) {
+		mainConf.logLevel = conf.logLevel;
+	}
+
 	GG[cata].info(`加载 主[配置]: 路径{${confPath}}`);
 
 	return conf;

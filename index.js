@@ -24,7 +24,7 @@ async function welcomeDesire() {
 		}
 
 		// 加载服务器日志
-		await GG.addCataServ(mainConf.path.log);
+		await GG.addCataServ(mainConf.path.log, mainConf.logLevel || 'all');
 
 		if(mainConf.apps.length) {
 			let text = '[应用路径]列表:\r\n';

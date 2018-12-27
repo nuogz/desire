@@ -29,7 +29,7 @@ module.exports = async function(pathApp, pathLog) {
 	}
 
 	// 应用日志
-	let G = await GG.addCata(C.name, C.path.log);
+	let G = await GG.addCata(C.name, C.path.log, C.logLevel || 'all');
 
 	try {
 		await loadServ(C, G);
