@@ -15,9 +15,4 @@ module.exports = async function({ C, Koa }) {
 	if(C.serv.cors) { Koa.use(Cors()); }
 	// hsts请求头
 	if(C.serv.http2) { Koa.use(Helmet()); }
-
-	// Cookies密钥
-	if(C.serv.cookey) {
-		Koa.keys = [ C.serv.cookey ];
-	}
 };
