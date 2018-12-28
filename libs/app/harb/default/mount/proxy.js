@@ -12,6 +12,16 @@ module.exports = function($) {
 		}
 
 		Router[rout.method](rout.path, async function(ctx, next) {
+			ctx.rout = rout;
+
+			await next();
+
+			if(!ctx.access) {
+				ctx.status = 403;
+
+				return;
+			}
+
 			let raw = ctx.raw;
 
 			let files = ctx.req.files;
@@ -102,7 +112,7 @@ module.exports = function($) {
 				}
 			}
 
-			await next();
+
 		});
 	};
 };
