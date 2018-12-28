@@ -24,7 +24,7 @@ module.exports = async function($) {
 
 			if(ctx.access) {
 				try {
-					ctx.body = await func(ctx.raw);
+					ctx.body = await func(ctx.raw, ctx);
 
 					if(ctx.body && ctx.body.type) {
 						ctx.type = ctx.body.type || 'json';
