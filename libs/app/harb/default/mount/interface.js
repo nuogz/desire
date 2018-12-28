@@ -23,11 +23,21 @@ module.exports = async function($) {
 			await next();
 
 			if(ctx.access) {
-				ctx.body = await func(ctx.raw);
-			}
+				try {
+					ctx.body = await func(ctx.raw);
 
-			if(ctx.body.type) {
-				ctx.type = ctx.body.type || 'json';
+					if(ctx.body && ctx.body.type) {
+						ctx.type = ctx.body.type || 'json';
+					}
+				}
+				catch(e) {
+					ctx.status == 500;
+
+					G.error(e.message || e);
+				}
+			}
+			else {
+				ctx.status = 403;
 			}
 		});
 	};
