@@ -1,4 +1,4 @@
-module.exports = async function($, wockInfo) {
+module.exports = async function($, wockInfo = {}) {
 	let { G, C } = $;
 
 	let WebSocket = require('ws');

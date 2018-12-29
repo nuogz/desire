@@ -1,4 +1,4 @@
-module.exports = async function($, wockInfo) {
+module.exports = async function($, wockInfo = {}) {
 	let { G, WockMan } = $;
 
 	return async function(rout) {
@@ -14,9 +14,9 @@ module.exports = async function($, wockInfo) {
 		}
 
 		let funcArr = [
-			...wockInfo.before,
+			...(wockInfo.before || []),
 			func,
-			...wockInfo.after
+			...(wockInfo.after || [])
 		];
 
 		WockMan.add(rout.path, async function(wock, raw) {
