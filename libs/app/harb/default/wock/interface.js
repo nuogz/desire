@@ -26,12 +26,13 @@ module.exports = async function($, wockInfo) {
 
 			try {
 				for(let func of funcArr) {
-					result = await func(result);
+					result = await func(result, wock);
 				}
-			}
-			catch(error) { true; }
-			finally {
+
 				wock.send(JSON.stringify({ type: rout.path, data: result }));
+			}
+			catch(e) {
+				G.trace(`执行 [Wock接口], 错误: ${e.message}`);
 			}
 		});
 	};
