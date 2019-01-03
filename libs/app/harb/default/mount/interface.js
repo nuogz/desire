@@ -1,4 +1,4 @@
-module.exports = async function($) {
+module.exports = async function($, before, after) {
 	let { G, Router, Multer } = $;
 
 	return async function(rout) {
@@ -14,7 +14,12 @@ module.exports = async function($) {
 		}
 
 		if(rout._stat.upload == 1) {
-			$.router[rout.method](rout.path, Multer.any());
+			Router[rout.method](rout.path, Multer.any());
+		}
+
+		// 前置中间件
+		for(let func of (before || [])) {
+			Router[rout.method](rout.path, func);
 		}
 
 		Router[rout.method](rout.path, async function(ctx, next) {
@@ -40,5 +45,10 @@ module.exports = async function($) {
 				ctx.status = 403;
 			}
 		});
+
+		// 后置中间件
+		for(let func of (after || [])) {
+			Router[rout.method](rout.path, func);
+		}
 	};
 };

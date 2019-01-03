@@ -1,5 +1,5 @@
 module.exports = async function($) {
-	let { C, Router } = $;
+	let { C } = $;
 
 	return async function(info) {
 		// 文件上传
@@ -9,15 +9,20 @@ module.exports = async function($) {
 			await require('./wock')($, info.wock);
 		}
 
-		// 前置中间件
+		let before = [];
+		let after = [];
+
 		for(let func of (info.before || [])) {
-			Router.use(await func($));
+			before.push(await func($));
+		}
+		for(let func of (info.after || [])) {
+			after.push(await func($));
 		}
 
 		// 挂载
-		let static = await require('./mount/static')($);
-		let interface = await require('./mount/interface')($);
-		let proxy = await require('./mount/proxy')($);
+		let static = await require('./mount/static')($, before, after);
+		let interface = await require('./mount/interface')($, before, after);
+		let proxy = await require('./mount/proxy')($, before, after);
 
 		// Wock
 		let interfaceWock = await require('./wock/interface')($, info.wock);
@@ -44,11 +49,6 @@ module.exports = async function($) {
 			else if(rout.type == 2 && rout.wockType) {
 				await proxyWock(rout);
 			}
-		}
-
-		// 后置中间件
-		for(let func of (info.after || [])) {
-			Router.use(await func($));
 		}
 	};
 };

@@ -1,4 +1,4 @@
-module.exports = function($) {
+module.exports = function($, before, after) {
 	let { G, R, Router, Multer } = $;
 
 	let Axios = require('axios');
@@ -9,6 +9,11 @@ module.exports = function($) {
 
 		if(rout._stat.upload == 1) {
 			Router[rout.method](rout.path, Multer.any());
+		}
+
+		// 前置中间件
+		for(let func of (before || [])) {
+			Router[rout.method](rout.path, func);
 		}
 
 		Router[rout.method](rout.path, async function(ctx, next) {
@@ -46,7 +51,7 @@ module.exports = function($) {
 				}
 			}
 
-			if(rout.type == 4 && (rout.proxy.host == '127.0.0.1' || rout.proxy.host == '0.0.0.0')) {
+			if(rout.proxy.host == '127.0.0.1' || rout.proxy.host == '0.0.0.0') {
 				raw._local = true;
 			}
 			else {
@@ -111,8 +116,11 @@ module.exports = function($) {
 					ctx.status = 404;
 				}
 			}
-
-
 		});
+
+		// 后置中间件
+		for(let func of (after || [])) {
+			Router[rout.method](rout.path, func);
+		}
 	};
 };
