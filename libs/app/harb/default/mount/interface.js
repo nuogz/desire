@@ -30,10 +30,6 @@ module.exports = async function($, before, after) {
 			if(ctx.access) {
 				try {
 					ctx.body = await func(ctx.raw, ctx);
-
-					if(ctx.body && ctx.body.type) {
-						ctx.type = ctx.body.type || 'json';
-					}
 				}
 				catch(e) {
 					ctx.status == 500;
