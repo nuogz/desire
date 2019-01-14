@@ -1,7 +1,7 @@
 module.exports = async function() {
 	let log4js = require('log4js');
-	let Chalk = require('Chalk');
-	let Moment = require('Moment');
+	let Chalk = require('chalk');
+	let Moment = require('moment');
 
 	let levelStrCH = {
 		ALL: '信息',
