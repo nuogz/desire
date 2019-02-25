@@ -84,7 +84,7 @@ module.exports = function($, before, after) {
 							try {
 								ctx.body = (await Axios.get({
 									url: url,
-									responseType:'stream'
+									responseType: 'stream'
 								})).data;
 
 								ctx.attachment(_pa.parse(url).base);

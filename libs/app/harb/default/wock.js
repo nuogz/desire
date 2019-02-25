@@ -23,7 +23,7 @@ module.exports = async function($, wockInfo = {}) {
 	});
 
 	let prefix = _ul.resolve(C.serv.prefix || '/', C.serv.wock.prefix || '/');
-	let ping = C.serv.wock.ping != undefined && !C.serv.wock.ping;
+	let ping = C.serv.wock.ping !== false;
 
 	// 挂载到http协议下
 	$.Serv.on('upgrade', function(request, socket, head) {

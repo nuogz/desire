@@ -22,7 +22,11 @@ module.exports = async function($, wockInfo = {}) {
 		WockMan.add(rout.path, async function(wock, raw) {
 			let result = raw;
 
-			raw._rout = rout;
+			if(result === undefined || result === null) {
+				result = {};
+			}
+
+			result._rout = rout;
 
 			try {
 				for(let func of funcArr) {
