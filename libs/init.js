@@ -28,6 +28,7 @@ module.exports = async function() {
 	};
 
 	E.Moment.locale('zh-cn');
+	E.Moment.defaultFormat = 'YYYY-MM-DD HH:mm:ss';
 
 	await require('./log')();
 };
