@@ -56,7 +56,7 @@ module.exports = async function() {
 
 	log4js.configure(conf);
 
-	let defaultPath = RC('./logs');
+	let defaultPath = RD('./logs');
 
 	global.GG = {
 		addCata: async function(cata, cataPath = defaultPath, level = 'all') {
