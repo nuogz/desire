@@ -20,7 +20,7 @@ module.exports = async function({ C, G, Serv, Koa, Router }) {
 	// 监听端口
 	Serv.listen(C.serv.port, C.serv.host);
 
-	G.info(`监听 [端口]{${C.serv.http2 ? 'http' : 'http2'}://${C.serv.host}:${C.serv.port}}`);
+	G.info(`监听 [端口]{${C.serv.http2 ? 'http2' : 'http'}://${C.serv.host}:${C.serv.port}}`);
 
 	// 降低权限
 	try {
