@@ -18,7 +18,16 @@ module.exports = async function({ C, G, Serv, Koa, Router }) {
 	});
 
 	// 监听端口
-	Serv.listen(C.serv.port, C.serv.host);
+	await new Promise(function(resolve, reject) {
+		Serv.listen(C.serv.port, C.serv.host, function(err) {
+			if(err) {
+				reject(err);
+			}
+			else {
+				resolve();
+			}
+		});
+	});
 
 	G.info(`监听 [端口]{${C.serv.http2 ? 'http2' : 'http'}://${C.serv.host}:${C.serv.port}}`);
 
