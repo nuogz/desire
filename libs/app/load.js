@@ -39,7 +39,7 @@ module.exports = async function(pathApp, pathLog) {
 		GG.serv.warn(`启动 [应用]{${C.name}}: 错误, 路径{${pathApp}}, 原因: ${error.message}`);
 
 		if(error.stack) {
-			GG.serv.trace(error.stack);
+			GG.serv.error(error.stack);
 		}
 	}
 

@@ -44,7 +44,10 @@ module.exports = async function(C, G) {
 
 		Serv,
 		Koa,
-		Router
+		Router,
+
+		// 后加载函数字典
+		afterInit: {},
 	};
 
 	// 通用请求头
@@ -60,6 +63,17 @@ module.exports = async function(C, G) {
 
 	// 绑定并启动服务
 	await parseServ($);
+
+	// 执行后加载函数
+	for(let aik in $.afterInit) {
+		let func = $.afterInit[aik];
+
+		if(typeof func == 'function') {
+			G.debug(`执行 [后加载函数]: ${aik}`);
+
+			await func();
+		}
+	}
 
 	return $;
 };
