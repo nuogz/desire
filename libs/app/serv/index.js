@@ -61,10 +61,7 @@ module.exports = async function(C, G) {
 	// 应用
 	await require(C.path.app)($);
 
-	// 绑定并启动服务
-	await parseServ($);
-
-	// 执行后加载函数
+	// 后加载函数
 	for(let aik in $.afterInit) {
 		let func = $.afterInit[aik];
 
@@ -74,6 +71,9 @@ module.exports = async function(C, G) {
 			await func();
 		}
 	}
+
+	// 绑定并启动服务
+	await parseServ($);
 
 	return $;
 };

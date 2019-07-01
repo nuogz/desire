@@ -25,10 +25,35 @@ module.exports = async function($, wockInfo = {}) {
 	let prefix = _ul.resolve(C.serv.prefix || '/', C.serv.wock.prefix || '/');
 	let ping = C.serv.wock.ping !== false;
 
+	// 各时机函数
+	let beforeFunc = [];
+	let afterFunc = [];
+	let upgradeFunc = [];
+	let closeFunc = [];
+
+	// 时机中间件
+	for(let func of (wockInfo.before || [])) {
+		beforeFunc.push(await func($));
+	}
+	for(let func of (wockInfo.after || [])) {
+		afterFunc.push(await func($));
+	}
+	for(let func of (wockInfo.upgrade || [])) {
+		upgradeFunc.push(await func($));
+	}
+	for(let func of (wockInfo.close || [])) {
+		closeFunc.push(await func($));
+	}
+
+	wockInfo.before = beforeFunc;
+	wockInfo.after = afterFunc;
+	wockInfo.upgrade = upgradeFunc;
+	wockInfo.close = closeFunc;
+
 	// 挂载到http协议下
 	$.Serv.on('upgrade', function(request, socket, head) {
 		if(_ul.parse(request.url).pathname == prefix) {
-			for(let func of $.WockMan.upgradeFunc) {
+			for(let func of wockInfo.upgrade) {
 				if(typeof func == 'function') {
 					func(request, socket, head);
 				}
@@ -39,21 +64,6 @@ module.exports = async function($, wockInfo = {}) {
 			});
 		}
 	});
-
-	// 获取前后置函数
-	let beforeFunc = [];
-	let afterFunc = [];
-
-	// 前置中间件
-	for(let func of (wockInfo.before || [])) {
-		beforeFunc.push(await func($));
-	}
-	for(let func of (wockInfo.after || [])) {
-		afterFunc.push(await func($));
-	}
-
-	wockInfo.before = beforeFunc;
-	wockInfo.after = afterFunc;
 
 	// 事件Map
 	let handDict = {
@@ -85,7 +95,7 @@ module.exports = async function($, wockInfo = {}) {
 
 			oneOff = true;
 
-			for(let func of $.WockMan.closeFunc) {
+			for(let func of wockInfo.close) {
 				if(typeof func == 'function') {
 					func(reason, wock);
 				}
@@ -155,8 +165,7 @@ module.exports = async function($, wockInfo = {}) {
 	$.WockMan = {
 		serv: wockServ,
 
-		closeFunc: [],
-		upgradeFunc: [],
+		wockInfo,
 
 		add: function(name, func) {
 			if(!name && !(func instanceof Function)) { return false; }
