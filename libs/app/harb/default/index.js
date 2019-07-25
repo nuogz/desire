@@ -2,6 +2,8 @@ module.exports = async function($) {
 	let { C } = $;
 
 	return async function(info) {
+		$.RoutMap = info;
+
 		// 文件上传
 		$.Multer = require('koa-multer')({ dest: $.C.path.temp || _os.tmpdir() });
 

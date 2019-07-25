@@ -1,4 +1,4 @@
-module.exports = async function($, before, after) {
+module.exports = async function($, before = [], after = []) {
 	let { G, Router, Multer } = $;
 
 	return async function(rout) {
@@ -18,16 +18,39 @@ module.exports = async function($, before, after) {
 		}
 
 		// 前置中间件
-		for(let func of (before || [])) {
+		for(let func of before) {
 			Router[rout.method](rout.path, func);
 		}
 
-		Router[rout.method](rout.path, async function(ctx, next) {
-			ctx.rout = rout;
+		// 主中间件
+		let main;
+		if(before.length) {
+			main = async function(ctx, next) {
+				ctx.rout = rout;
 
-			await next();
+				await next();
 
-			if(ctx.access) {
+				if(ctx.access) {
+					try {
+						ctx.body = await func(ctx.raw, ctx);
+					}
+					catch(e) {
+						ctx.status == 500;
+
+						G.error(e.message || e);
+					}
+				}
+				else {
+					ctx.status = 403;
+				}
+			};
+		}
+		else {
+			main = async function(ctx, next) {
+				ctx.rout = rout;
+
+				await next();
+
 				try {
 					ctx.body = await func(ctx.raw, ctx);
 				}
@@ -36,14 +59,13 @@ module.exports = async function($, before, after) {
 
 					G.error(e.message || e);
 				}
-			}
-			else {
-				ctx.status = 403;
-			}
-		});
+			};
+		}
+
+		Router[rout.method](rout.path, main);
 
 		// 后置中间件
-		for(let func of (after || [])) {
+		for(let func of after) {
 			Router[rout.method](rout.path, func);
 		}
 	};
