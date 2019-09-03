@@ -5,7 +5,7 @@ module.exports = function($, before, after) {
 	let FormData = require('form-data');
 
 	return async function(rout) {
-		G.trace(`加载 [代理], ID: {${rout.id}}, 路径: {${rout.path}}`);
+		G.trace(`加载 [代理], ${rout.id ? `ID: {${rout.id}}` : ''}, 路径: {${rout.path}}`);
 
 		if(rout._stat.upload == 1) {
 			Router[rout.method](rout.path, Multer.any());

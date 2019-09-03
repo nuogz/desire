@@ -4,7 +4,7 @@ module.exports = function($, wockInfo) {
 	let Axios = require('axios');
 
 	return async function(rout) {
-		G.trace(`加载 [Wock代理], ID: {${rout.id}}, 路径: {${rout.path}}`);
+		G.trace(`加载 [Wock代理], ${rout.id ? `ID: {${rout.id}}` : ''}, 路径: {${rout.path}}`);
 
 		let funcArr = [
 			...wockInfo.before,
