@@ -1,7 +1,10 @@
-async function welcomeDesire() {
+global.L = (console || undefined).log;
+
+const logger = require('./libs/log');
+
+async function Desire(confServ) {
 	try {
-		// 环境
-		await require('./libs/init')();
+		logger(confServ.name, confServ.log.level, confServ.log.path);
 
 		// 解析参数
 		let mainConf = { apps: [], path: {} };
@@ -55,4 +58,4 @@ async function welcomeDesire() {
 	}
 }
 
-welcomeDesire();
+module.exports = Desire;

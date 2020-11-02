@@ -1,35 +1,33 @@
 {
 	"name": "desire",
-	"version": "3.0.0",
-	"description": "simple encapsulation based on koa.js",
+	"version": "4.0.0",
+	"description": "simple wrapper around koa.js",
 	"main": "index.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
 	"repository": "zheung/desire",
 	"keywords": [],
-	"author": "DanoR",
+	"author": "Nuogz",
 	"license": "ISC",
 	"dependencies": {
-		"@koa/cors": "^2.2.3",
-		"axios": "^0.19.0",
-		"chalk": "^2.4.2",
+		"@koa/cors": "^3.1.0",
+		"@koa/multer": "^3.0.0",
+		"axios": "^0.21.0",
+		"chalk": "^4.1.0",
 		"commander": "^2.20.0",
-		"form-data": "^2.5.1",
-		"koa": "^2.8.1",
+		"form-data": "^3.0.0",
+		"koa": "^2.13.0",
 		"koa-bodyparser": "^4.2.0",
-		"koa-compress": "^2.0.0",
+		"koa-compress": "^5.0.1",
 		"koa-favicon": "^2.0.0",
-		"koa-helmet": "^3.3.0",
-		"koa-mount": "^3.0.0",
-		"koa-multer": "^1.0.2",
-		"koa-router": "^7.3.0",
-		"koa-static": "^3.0.0",
-		"log4js": "^3.0.6",
+		"koa-helmet": "^6.0.0",
+		"koa-mount": "^4.0.0",
+		"koa-router": "^9.4.0",
+		"koa-static": "^5.0.0",
+		"log4js": "^6.3.0",
 		"moment": "^2.24.0",
-		"ws": "^6.2.1"
+		"multer": "^1.4.2",
+		"ws": "^7.3.1"
 	},
 	"devDependencies": {
-		"eslint": "^6.3.0"
+		"eslint": "^7.12.1"
 	}
 }

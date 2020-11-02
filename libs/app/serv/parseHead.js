@@ -6,7 +6,11 @@ let BodyParser = require('koa-bodyparser');
 
 module.exports = async function({ C, Koa }) {
 	// zlib压缩
-	Koa.use(Compress({ threshold: 2048, flush: require('zlib').Z_SYNC_FLUSH }));
+	Koa.use(Compress({
+		threshold: 2048,
+		gzip: { flush: require('zlib').constants.Z_SYNC_FLUSH },
+		deflate: { flush: require('zlib').constants.Z_SYNC_FLUSH },
+	}));
 
 	// 请求参数解析
 	Koa.use(BodyParser());
