@@ -20,10 +20,6 @@ const rc = {
 		quoteProps: [2, 'as-needed'],
 		requireAtomicUpdates: [0],
 	},
-	globals: {
-		L: true,
-		G: true,
-	}
 };
 
 for(const key in rc.rules) {

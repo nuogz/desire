@@ -1,4 +1,7 @@
-module.exports = async function(name, level, defaultPath = null) {
+const L = (console || undefined).log;
+const PA = require('path');
+
+module.exports = function(nameLog, levelLog, pathSave = null) {
 	const Log4js = require('log4js');
 	const Chalk = require('chalk');
 	const Moment = require('moment');
@@ -19,19 +22,54 @@ module.exports = async function(name, level, defaultPath = null) {
 			.replace(/\{(.*?)\}/g, chalkTextValue);
 	};
 
-	const logFormatter = function(logEvent) {
-		const time = Moment(logEvent.startTime).format('YYYY-MM-DD HH:mm:ss:SSS');
-		const color = logEvent.level.colour;
-		const levelStr = levelStrCH[logEvent.level.levelStr];
-		const system = logEvent.data[0];
-		const colorText = colorful(logEvent.data.slice(1).join('\n'));
+	let loggerStack;
 
-		return Chalk[color](`[${time}][${levelStr}][${logEvent.categoryName}] ==> [${system}] ${colorText}`);
+	const logFormatter = function({ startTime, level: { colour, levelStr }, data: datas }) {
+		const time = Moment(startTime).format('YYYY-MM-DD HH:mm:ss:SSS');
+		const color = colour;
+		const level = levelStrCH[levelStr];
+		const system = datas[0];
+
+		const texts = [];
+		const errors = [];
+		for(let i = 1; i < datas.length; i++) {
+			const data = datas[i];
+
+			if(data instanceof Error || (data.stack && data.message)) {
+				errors.push(data);
+
+				texts.push(String(data.message).trim());
+			}
+			else if(data.message) {
+				texts.push(String(data.message).trim());
+			}
+			else {
+				texts.push(String(data).trim());
+			}
+		}
+
+		const textHighlight = colorful(texts.join('\n\t'));
+
+		const textFinal = Chalk[color](`[${time}][${level}][${nameLog}] > [${system}] ${textHighlight}`);
+
+		if(errors.length) {
+			loggerStack[levelStr.toLowerCase()](
+				[
+					textFinal,
+					'---------------',
+					errors
+						.map(error => `${Chalk[color](error.message)}\n${error.stack.replace(/    /g, '\t')}`)
+						.join('\n--------------\n'),
+					'---------------',
+				].join('\n')
+			);
+		}
+
+		return textFinal;
 	};
 
-	if(!defaultPath) {
+	if(!pathSave) {
 		return L(logFormatter({
-			categoryName: '默认',
 			level: { colour: 'yellow', levelStr: 'WARN' },
 			data: ['日志', '路径未定义, 退出日志系统']
 		}));
@@ -39,50 +77,38 @@ module.exports = async function(name, level, defaultPath = null) {
 
 	Log4js.addLayout('colorConsole', function() { return logFormatter; });
 
-	const appenders = {
-		console: {
-			type: 'console',
-			layout: {
-				type: 'colorConsole'
+	Log4js.configure({
+		appenders: {
+			console: {
+				type: 'console',
+				layout: { type: 'colorConsole' }
+			},
+			file: {
+				type: 'file',
+				filename: PA.join(pathSave, nameLog + '.log'),
+				maxLogSize: 20971520,
+				layout: { type: 'pattern', pattern: '%x{message}', tokens: { message: logFormatter } }
+			},
+			fileStack: {
+				type: 'file',
+				filename: PA.join(pathSave, nameLog + '.stack.log'),
+				maxLogSize: 20971520,
+				layout: { type: 'basic', }
+			},
+			stack: {
+				type: 'logLevelFilter',
+				appender: 'fileStack',
+				level: 'error'
 			}
 		},
-		file: {
-			type: 'multiFile',
-			base: defaultPath,
-			property: 'categoryName',
-			extension: '.log',
-			maxLogSize: 20971520,
-			layout: {
-				type: 'pattern',
-				pattern: '[%d{yyyy-MM-dd hh:mm:ss:SSS}]%x{message}',
-				tokens: {
-					message(logEvent) {
-						const levelStr = levelStrCH[logEvent.level.levelStr];
-						const system = logEvent.data[0];
-						const colorText = colorful(logEvent.data.slice(1).join('\n'));
-				
-						return `[${levelStr}][${logEvent.categoryName}] ==> [${system}] ${colorText}`;
-					}
-				}
-			}
-		}
-	};
-
-	const categories = {
-		default: { appenders: ['console'], level: 'all' },
-		[name]: { appenders: ['console', 'file'], level }
-	};
-
-
-	Log4js.configure({
-		appenders,
-		categories,
+		categories: {
+			default: { appenders: ['console', 'file'], level: levelLog },
+			stack: { appenders: ['stack'], level: levelLog },
+		},
 		pm2: true
 	});
 
-	global.G = Log4js.getLogger(name);
+	loggerStack = Log4js.getLogger('stack');
 
-	G.info('日志', '测试');
-
-	return Log4js.getLogger('default').info('日志', `已加载, 路径: [${defaultPath}]`);
+	return Log4js.getLogger('default');
 };
