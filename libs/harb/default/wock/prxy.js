@@ -1,5 +1,5 @@
 module.exports = function($, wockInfo) {
-	let { G, WockMan } = $;
+	let { G, wockMan } = $;
 
 	let Axios = require('axios');
 
@@ -28,7 +28,7 @@ module.exports = function($, wockInfo) {
 			...wockInfo.after
 		];
 
-		WockMan.add(rout.path, async function(wock, raw) {
+		wockMan.add(rout.path, async function(wock, raw) {
 			let result = raw;
 
 			raw._rout = rout;

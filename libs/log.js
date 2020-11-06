@@ -24,7 +24,7 @@ module.exports = function(nameLog, levelLog, pathSave = null) {
 
 	let loggerStack;
 
-	const logFormatter = function({ startTime, level: { colour, levelStr }, data: datas }) {
+	const logFormatterConsole = function({ startTime, level: { colour, levelStr }, data: datas }) {
 		const time = Moment(startTime).format('YYYY-MM-DD HH:mm:ss:SSS');
 		const color = colour;
 		const level = levelStrCH[levelStr];
@@ -58,7 +58,7 @@ module.exports = function(nameLog, levelLog, pathSave = null) {
 					textFinal,
 					'---------------',
 					errors
-						.map(error => `${Chalk[color](error.message)}\n${error.stack.replace(/    /g, '\t')}`)
+						.map(error => `${Chalk[color](error.message)}\n${error.stack.replace(/ {4}/g, '\t')}${error.data ? `${error.data}` : ''}`)
 						.join('\n--------------\n'),
 					'---------------',
 				].join('\n')
@@ -67,15 +67,43 @@ module.exports = function(nameLog, levelLog, pathSave = null) {
 
 		return textFinal;
 	};
+	const logFormatterFile = function({ startTime, level: { colour, levelStr }, data: datas }) {
+		const time = Moment(startTime).format('YYYY-MM-DD HH:mm:ss:SSS');
+		const color = colour;
+		const level = levelStrCH[levelStr];
+		const system = datas[0];
+
+		const texts = [];
+		const errors = [];
+		for(let i = 1; i < datas.length; i++) {
+			const data = datas[i];
+
+			if(data instanceof Error || (data.stack && data.message)) {
+				errors.push(data);
+
+				texts.push(String(data.message).trim());
+			}
+			else if(data.message) {
+				texts.push(String(data.message).trim());
+			}
+			else {
+				texts.push(String(data).trim());
+			}
+		}
+
+		const textHighlight = colorful(texts.join('\n\t'));
+
+		return Chalk[color](`[${time}][${level}][${nameLog}] > [${system}] ${textHighlight}`);
+	};
 
 	if(!pathSave) {
-		return L(logFormatter({
+		return L(logFormatterConsole({
 			level: { colour: 'yellow', levelStr: 'WARN' },
 			data: ['日志', '路径未定义, 退出日志系统']
 		}));
 	}
 
-	Log4js.addLayout('colorConsole', function() { return logFormatter; });
+	Log4js.addLayout('colorConsole', function() { return logFormatterConsole; });
 
 	Log4js.configure({
 		appenders: {
@@ -87,7 +115,7 @@ module.exports = function(nameLog, levelLog, pathSave = null) {
 				type: 'file',
 				filename: PA.join(pathSave, nameLog + '.log'),
 				maxLogSize: 20971520,
-				layout: { type: 'pattern', pattern: '%x{message}', tokens: { message: logFormatter } }
+				layout: { type: 'pattern', pattern: '%x{message}', tokens: { message: logFormatterFile } }
 			},
 			fileStack: {
 				type: 'file',

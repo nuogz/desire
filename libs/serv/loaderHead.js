@@ -1,22 +1,22 @@
 // 模块引用
-let Helmet = require('koa-helmet');
-let Cors = require('@koa/cors');
-let Compress = require('koa-compress');
-let BodyParser = require('koa-bodyparser');
+const Compress = require('koa-compress');
+const BodyParser = require('koa-bodyparser');
+const Cors = require('@koa/cors');
+const Helmet = require('koa-helmet');
 
-module.exports = async function({ C, Koa }) {
+module.exports = async function({ koa }, { cors, http2 }) {
 	// zlib压缩
-	Koa.use(Compress({
+	koa.use(Compress({
 		threshold: 2048,
 		gzip: { flush: require('zlib').constants.Z_SYNC_FLUSH },
 		deflate: { flush: require('zlib').constants.Z_SYNC_FLUSH },
 	}));
 
 	// 请求参数解析
-	Koa.use(BodyParser());
+	koa.use(BodyParser());
 
 	// cors请求头
-	if(C.serv.cors) { Koa.use(Cors()); }
+	if(cors) { koa.use(Cors()); }
 	// hsts请求头
-	if(C.serv.http2) { Koa.use(Helmet()); }
+	if(http2) { koa.use(Helmet()); }
 };

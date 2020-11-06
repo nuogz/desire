@@ -1,56 +1,54 @@
+const OS = require('os');
+
 module.exports = async function($) {
-	let { C } = $;
+	const { C: { paths, folds, faces, mare, wock } } = $;
 
-	return async function(info) {
-		$.RoutMap = info;
+	// 文件上传
+	$.Multer = require('@koa/multer')({ dest: paths.temp || OS.tmpdir() });
 
-		// 文件上传
-		$.Multer = require('koa-multer')({ dest: $.C.path.temp || _os.tmpdir() });
+	if(wock && wock.enabled) {
+		await require('./wock')($, wock);
+	}
 
-		if(C.serv.wock && C.serv.wock.enabled) {
-			await require('./wock')($, info.wock);
-		}
+	const before = [];
+	const after = [];
 
-		let before = [];
-		let after = [];
+	for(const func of mare.before || []) {
+		before.push(await func($));
+	}
+	for(const func of mare.after || []) {
+		after.push(await func($));
+	}
 
-		for(let func of (info.before || [])) {
-			before.push(await func($));
-		}
-		for(let func of (info.after || [])) {
-			after.push(await func($));
-		}
+	mare.before = before;
+	mare.after = after;
 
-		// 挂载
-		let static = await require('./mount/static')($, before, after);
-		let interface = await require('./mount/interface')($, before, after);
-		let proxy = await require('./mount/proxy')($, before, after);
+	// 挂载
+	const mounters = [
+		[
+			folds,
+			await require('./mount/fold')($),
+			null,
+		],
+		[
+			faces,
+			await require('./mount/face')($),
+			await require('./wock/face')($, wock),
+		]
+	];
 
-		// Wock
-		let interfaceWock = await require('./wock/interface')($, info.wock);
-		let proxyWock = await require('./wock/proxy')($, info.wock);
+	for(const [routs, mount, mountWock] of mounters) {
+		if(mountWock) {
+			for(const rout of routs) {
+				if(rout.wock !== 'only') { await mount(rout); }
 
-		for(let rout of info.routs) {
-			// 接口
-			if(rout.type == 1) {
-				await interface(rout);
-			}
-			// 代理
-			else if(rout.type == 2) {
-				await proxy(rout);
-			}
-			// 静态
-			else if(rout.type == 3) {
-				await static(rout);
-			}
-
-			// Wock
-			if(rout.type == 4 || (rout.type == 1 && rout.wockType)) {
-				await interfaceWock(rout);
-			}
-			else if(rout.type == 2 && rout.wockType) {
-				await proxyWock(rout);
+				if(rout.wock) { await mountWock(rout); }
 			}
 		}
-	};
+		else {
+			for(const rout of routs) {
+				await mount(rout);
+			}
+		}
+	}
 };

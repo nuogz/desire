@@ -1,5 +1,5 @@
 module.exports = async function($, wockInfo = {}) {
-	let { G, WockMan } = $;
+	let { G, wockMan } = $;
 
 	return async function(rout) {
 		let func = rout.func;
@@ -19,7 +19,7 @@ module.exports = async function($, wockInfo = {}) {
 			...(wockInfo.after || [])
 		];
 
-		WockMan.add(rout.path, async function(wock, raw) {
+		wockMan.add(rout.path, async function(wock, raw) {
 			let result = raw;
 
 			if(result === undefined || result === null) {

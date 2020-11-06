@@ -1,9 +1,11 @@
-module.exports = async function($, wockInfo = {}) {
-	let { G, C } = $;
+const UL = require('url');
 
-	let WebSocket = require('ws');
+module.exports = async function($) {
+	const { C, G } = $;
 
-	let wockServ = new WebSocket.Server({
+	const WebSocket = require('ws');
+
+	const wockServ = new WebSocket.Server({
 		noServer: true,
 		perMessageDeflate: {
 			zlibDeflateOptions: {
@@ -22,38 +24,35 @@ module.exports = async function($, wockInfo = {}) {
 		},
 	});
 
-	let prefix = _ul.resolve(C.serv.prefix || '/', C.serv.wock.prefix || '/');
-	let ping = C.serv.wock.ping !== false;
+	const prefix = UL.resolve(C.prefix || '/', C.wock.prefix || '/');
+	const ping = C.wock.ping !== false;
 
 	// 各时机函数
-	let beforeFunc = [];
-	let afterFunc = [];
-	let upgradeFunc = [];
-	let closeFunc = [];
+	const handles = {
+		before: [],
+		after: [],
+		upgrade: [],
+		close: [],
+	};
 
 	// 时机中间件
-	for(let func of (wockInfo.before || [])) {
-		beforeFunc.push(await func($));
+	for(const func of C.wock.before || []) {
+		handles.before.push(await func($));
 	}
-	for(let func of (wockInfo.after || [])) {
-		afterFunc.push(await func($));
+	for(const func of C.wock.after || []) {
+		handles.after.push(await func($));
 	}
-	for(let func of (wockInfo.upgrade || [])) {
-		upgradeFunc.push(await func($));
+	for(const func of C.wock.upgrade || []) {
+		handles.upgrade.push(await func($));
 	}
-	for(let func of (wockInfo.close || [])) {
-		closeFunc.push(await func($));
+	for(const func of C.wock.close || []) {
+		handles.close.push(await func($));
 	}
-
-	wockInfo.before = beforeFunc;
-	wockInfo.after = afterFunc;
-	wockInfo.upgrade = upgradeFunc;
-	wockInfo.close = closeFunc;
 
 	// 挂载到http协议下
-	$.Serv.on('upgrade', function(request, socket, head) {
-		if(_ul.parse(request.url).pathname == prefix) {
-			for(let func of wockInfo.upgrade) {
+	$.serv.on('upgrade', function(request, socket, head) {
+		if(UL.parse(request.url).pathname == prefix) {
+			for(const func of handles.upgrade) {
 				if(typeof func == 'function') {
 					func(request, socket, head);
 				}
@@ -66,10 +65,8 @@ module.exports = async function($, wockInfo = {}) {
 	});
 
 	// 事件Map
-	let handDict = {
-		ping: function(wock) {
-			wock.cast('pong');
-		}
+	const handDict = {
+		ping(wock) { wock.cast('pong'); }
 	};
 
 	wockServ.on('connection', function(wock) {
@@ -79,7 +76,7 @@ module.exports = async function($, wockInfo = {}) {
 			}
 			catch(error) {
 				if(error.message.indexOf('CLOSED') == -1) {
-					G.error(error.stack);
+					G.error('套接', `事件{${type}}`, error);
 				}
 			}
 		};
@@ -90,12 +87,12 @@ module.exports = async function($, wockInfo = {}) {
 		let outCount = 0;
 
 		let oneOff = false;
-		let closeHandle = function(reason) {
+		const closeHandle = function(reason) {
 			if(oneOff) { return; }
 
 			oneOff = true;
 
-			for(let func of wockInfo.close) {
+			for(const func of C.wock.close) {
 				if(typeof func == 'function') {
 					func(reason, wock);
 				}
@@ -162,25 +159,23 @@ module.exports = async function($, wockInfo = {}) {
 		}
 	});
 
-	$.WockMan = {
+	$.wockMan = {
 		serv: wockServ,
 
-		wockInfo,
-
-		add: function(name, func) {
+		add(name, func) {
 			if(!name && !(func instanceof Function)) { return false; }
 
 			handDict[name] = func;
 		},
-		del: function(name) {
+		del(name) {
 			if(!name) { return false; }
 
 			delete handDict[name];
 		},
-		get: function(name) {
+		get(name) {
 			return handDict[name];
 		},
-		run: function(name, ...data) {
+		run(name, ...data) {
 			handDict[name](...data);
 		}
 	};

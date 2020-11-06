@@ -1,20 +1,20 @@
-const Desire = async function(C, ronf) {
+const Desire = async function(C) {
 	const G = Desire.G;
 
 	const loadServ = require('./libs/serv');
 
-	G.info('系统', '----------------------------');
+	G.info('服务', '----------------------------');
 
 	try {
-		await loadServ(C, G, ronf);
+		await loadServ(C, G);
 
-		G.info('系统', '✔');
+		G.info('服务', '✔', `监听地址{${C.http2.enabled ? 'http2' : 'http'}://${C.host}:${C.port}}`);
 	}
 	catch(error) {
-		G.fatal('系统', `启动 [应用]{${C.name}} 失败`, error);
+		G.fatal('服务', `启动 [服务]{${C.name}}`, error);
 	}
 
-	G.info('系统', '----------------------------');
+	G.info('服务', '----------------------------');
 };
 
 Desire.initLogger = function(nameLog, levelLog, pathSave = null) {

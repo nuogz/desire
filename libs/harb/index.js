@@ -1,15 +1,21 @@
 module.exports = async function($) {
-	let { C } = $;
+	const { C, G } = $;
 
-	let harb = C.serv.harb;
+	const harb = C.harb;
+	try {
+		if(typeof harb == 'function') {
+			$.harb = await harb($);
+		}
+		else if(harb != 'default' && typeof harb == 'string') {
+			$.harb = await require(harb)($);
+		}
+		else {
+			$.harb = await require('./default')($);
+		}
 
-	if(typeof harb == 'function') {
-		$.Harb = await harb($);
+		G.info('海港', '✔');
 	}
-	else if(harb != 'default' && typeof harb == 'string') {
-		$.Harb = await require(harb)($);
-	}
-	else {
-		$.Harb = await require('./default')($);
+	catch(error) {
+		G.fatal('海港', `加载 [海港]`, error);
 	}
 };
