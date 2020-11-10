@@ -25,7 +25,7 @@ module.exports = async function({ koa }, { cors }) {
 			objectSrc: ['\'none\''],
 			scriptSrc: ['\'self\'', '\'unsafe-eval\''],
 			scriptSrcAttr: ['\'none\''],
-			styleSrc: ['\'self\'', 'https:', 'unsafe-inline'],
+			styleSrc: ['\'self\'', 'https:', '\'unsafe-inline\''],
 			imgSrc: ['\'self\'', 'https:', 'data:'],
 			fontSrc: ['\'self\'', 'https:', 'data:'],
 			upgradeInsecureRequests: [],

@@ -1,6 +1,6 @@
 {
 	"name": "desire",
-	"version": "4.0.0",
+	"version": "4.1.0",
 	"description": "simple wrapper around koa.js",
 	"main": "index.js",
 	"repository": "zheung/desire",
