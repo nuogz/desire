@@ -1,7 +1,6 @@
-const L = (console || undefined).log;
-const PA = require('path');
+module.exports = function(nameLog = 'default', levelLog = 'all', pathSave = null, isColorText = true) {
+	const PA = require('path');
 
-module.exports = function(nameLog, levelLog, pathSave = null) {
 	const Log4js = require('log4js');
 	const Chalk = require('chalk');
 	const Moment = require('moment');
@@ -13,7 +12,7 @@ module.exports = function(nameLog, levelLog, pathSave = null) {
 		OFF: '关闭',
 	};
 
-	const chalkTextWord = Chalk.inverse.bold('$1');
+	const chalkTextWord = Chalk.underline.bold('$1');
 	const chalkTextValue = Chalk.white('[$1]');
 
 	const colorful = function(str) {
@@ -29,11 +28,14 @@ module.exports = function(nameLog, levelLog, pathSave = null) {
 		const color = colour;
 		const level = levelStrCH[levelStr];
 		const system = datas[0];
+		const action = datas[1];
 
 		const texts = [];
 		const errors = [];
-		for(let i = 1; i < datas.length; i++) {
+		for(let i = 2; i < datas.length; i++) {
 			const data = datas[i];
+
+			if(data === undefined) { continue; }
 
 			if(data instanceof Error || (data.stack && data.message)) {
 				errors.push(data);
@@ -48,19 +50,21 @@ module.exports = function(nameLog, levelLog, pathSave = null) {
 			}
 		}
 
-		const textHighlight = colorful(texts.join('\n\t'));
+		const textHighlight = isColorText ? colorful(texts.join('\n\t')) : texts.join('\n\t');
+		const systemHighlight = isColorText ? colorful(system) : system;
+		const actionHighlight = isColorText ? colorful(action) : action;
 
-		const textFinal = Chalk[color](`[${time}][${level}][${nameLog}] > [${system}] ${textHighlight}`);
+		const textFinal = Chalk[color](`[${time}][${level}][${nameLog}] ${systemHighlight} >  ${actionHighlight}:  ${textHighlight}`);
 
 		if(errors.length) {
 			loggerStack[levelStr.toLowerCase()](
 				[
 					textFinal,
-					'---------------',
+					'\n-------------- Stack --------------',
 					errors
 						.map(error => `${Chalk[color](error.message)}\n${error.stack.replace(/ {4}/g, '\t')}${error.data ? `${error.data}` : ''}`)
 						.join('\n--------------\n'),
-					'---------------',
+					'\n\n==============================\n\n',
 				].join('\n')
 			);
 		}
@@ -78,6 +82,8 @@ module.exports = function(nameLog, levelLog, pathSave = null) {
 		for(let i = 1; i < datas.length; i++) {
 			const data = datas[i];
 
+			if(data === undefined) { continue; }
+
 			if(data instanceof Error || (data.stack && data.message)) {
 				errors.push(data);
 
@@ -91,22 +97,16 @@ module.exports = function(nameLog, levelLog, pathSave = null) {
 			}
 		}
 
-		const textHighlight = colorful(texts.join('\n\t'));
+		const textHighlight = isColorText ? colorful(texts.join('\n\t')) : texts.join('\n\t');
+		const systemHighlight = isColorText ? colorful(system) : system;
 
-		return Chalk[color](`[${time}][${level}][${nameLog}] > [${system}] ${textHighlight}`);
+		return Chalk[color](`[${time}][${level}][${nameLog}] ${systemHighlight} > ${textHighlight}`);
 	};
-
-	if(!pathSave) {
-		return L(logFormatterConsole({
-			level: { colour: 'yellow', levelStr: 'WARN' },
-			data: ['日志', '路径未定义, 退出日志系统']
-		}));
-	}
 
 	Log4js.addLayout('colorConsole', function() { return logFormatterConsole; });
 
-	Log4js.configure({
-		appenders: {
+	const appenders = pathSave ?
+		{
 			console: {
 				type: 'console',
 				layout: { type: 'colorConsole' }
@@ -114,23 +114,37 @@ module.exports = function(nameLog, levelLog, pathSave = null) {
 			file: {
 				type: 'file',
 				filename: PA.join(pathSave, nameLog + '.log'),
-				maxLogSize: 20971520,
+				maxLogSize: 1024 * 1024 * 20,
 				layout: { type: 'pattern', pattern: '%x{message}', tokens: { message: logFormatterFile } }
 			},
 			fileStack: {
 				type: 'file',
 				filename: PA.join(pathSave, nameLog + '.stack.log'),
-				maxLogSize: 20971520,
-				layout: { type: 'basic', }
+				maxLogSize: 1024 * 1024 * 20,
+				layout: { type: 'pattern', pattern: '%m' }
 			},
 			stack: {
 				type: 'logLevelFilter',
 				appender: 'fileStack',
-				level: 'error'
+				level: 'all'
 			}
-		},
+		} :
+		{
+			console: {
+				type: 'console',
+				layout: { type: 'colorConsole' }
+			},
+			stack: {
+				type: 'logLevelFilter',
+				appender: 'console',
+				level: 'all'
+			},
+		};
+
+	Log4js.configure({
+		appenders,
 		categories: {
-			default: { appenders: ['console', 'file'], level: levelLog },
+			default: { appenders: pathSave ? ['console', 'file'] : ['console'], level: levelLog },
 			stack: { appenders: ['stack'], level: levelLog },
 		},
 		pm2: true
@@ -138,5 +152,8 @@ module.exports = function(nameLog, levelLog, pathSave = null) {
 
 	loggerStack = Log4js.getLogger('stack');
 
-	return Log4js.getLogger('default');
+	const logger = Log4js.getLogger('default');
+	logger.info('日志', '加载', pathSave ? `✔, 日志路径{${pathSave}}` : '✔');
+
+	return logger;
 };

@@ -1,7 +1,6 @@
 module.exports = async function($) {
-	const { C, G } = $;
+	const { G, C: { harb } } = $;
 
-	const harb = C.harb;
 	try {
 		if(typeof harb == 'function') {
 			$.harb = await harb($);
@@ -13,9 +12,9 @@ module.exports = async function($) {
 			$.harb = await require('./default')($);
 		}
 
-		G.info('海港', '✔');
+		G.info('服务', '加载[接口]', '✔');
 	}
 	catch(error) {
-		G.fatal('海港', `加载 [海港]`, error);
+		G.fatal('服务', '加载[接口]', error);
 	}
 };
