@@ -17,11 +17,9 @@ module.exports = class Desire {
 			const configLog = C.log || {};
 
 			this.G = G(configLog.nameLog, configLog.levelLog, configLog.pathSave);
-
-			this.G.info('服务', '加载[日志]', '✔', `保存路径{${configLog.pathSave || '无'}}`);
 		}
 
-		this.serv = C.http2.enabled ? H2.createSecureServer(this.loadCert()) : H1.createServer();
+		this.serv = C.http2 && C.http2.enabled ? H2.createSecureServer(this.loadCert()) : H1.createServer();
 		this.koa = new KoaServ();
 		this.router = KoaRouter({ prefix: C.path || '/' });
 	}
@@ -41,10 +39,10 @@ module.exports = class Desire {
 			// 绑定并启动服务
 			await this.parseServ();
 
-			this.G.info('服务', `监听{${C.http2.enabled ? 'http2' : 'http'}://${C.host}:${C.port}}`, `✔`);
+			this.G.info('服务', `监听{${C.http2 && C.http2.enabled ? 'http2' : 'http'}://${C.host}:${C.port}}`, `✔`);
 		}
 		catch(error) {
-			this.G.fatal('服务', `监听{${C.http2.enabled ? 'http2' : 'http'}://${C.host}:${C.port}}`, error);
+			this.G.fatal('服务', `监听{${C.http2 && C.http2.enabled ? 'http2' : 'http'}://${C.host}:${C.port}}`, error);
 		}
 
 		return this;

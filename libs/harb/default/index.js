@@ -1,7 +1,7 @@
 const OS = require('os');
 
 module.exports = async function($) {
-	const { C: { paths, folds, faces, mare, wock } } = $;
+	const { C: { paths = {}, folds = [], faces = [], mare = {}, wock = false } } = $;
 
 	// 文件上传
 	$.Multer = require('@koa/multer')({ dest: paths.temp || OS.tmpdir() });
@@ -10,13 +10,16 @@ module.exports = async function($) {
 		await require('./wock')($, wock);
 	}
 
+	const beforeMare = mare && mare.before ? mare.before : [];
+	const afterMare = mare && mare.after ? mare.after : [];
+
 	const before = [];
 	const after = [];
 
-	for(const func of mare.before || []) {
+	for(const func of beforeMare) {
 		before.push(await func($));
 	}
-	for(const func of mare.after || []) {
+	for(const func of afterMare) {
 		after.push(await func($));
 	}
 

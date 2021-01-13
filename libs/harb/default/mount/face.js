@@ -5,20 +5,23 @@ module.exports = async function($) {
 		const handle = rout.handle;
 
 		if(!handle) {
-			G.warn('海港', `加载 [接口], 路由{${rout.path}}`, '缺少对应的[流程]代码');
+			G.warn('服务', `加载 [接口], 路由{${rout.path}}`, '缺少对应的[流程]代码');
 
 			return;
 		}
 		else {
-			G.debug('海港', `加载 [接口], 路由{${rout.path}}`);
+			G.debug('服务', `加载 [接口], 路由{${rout.path}}`);
 		}
 
 		if(rout.upload === true) {
 			router[rout.method](rout.path, multer.any());
 		}
 
+		const beforeMare = mare && mare.before ? mare.before : [];
+		const afterMare = mare && mare.after ? mare.after : [];
+
 		// 前置中间件
-		for(const middleware of mare.before || []) {
+		for(const middleware of beforeMare) {
 			router[rout.method](rout.path, middleware);
 		}
 
@@ -39,7 +42,7 @@ module.exports = async function($) {
 		});
 
 		// 后置中间件
-		for(const middleware of mare.after || []) {
+		for(const middleware of afterMare) {
 			router[rout.method](rout.path, middleware);
 		}
 	};

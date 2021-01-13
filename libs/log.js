@@ -54,7 +54,11 @@ module.exports = function(nameLog = 'default', levelLog = 'all', pathSave = null
 		const systemHighlight = isColorText ? colorful(system) : system;
 		const actionHighlight = isColorText ? colorful(action) : action;
 
-		const textFinal = Chalk[color](`[${time}][${level}][${nameLog}] ${systemHighlight} >  ${actionHighlight}:  ${textHighlight}`);
+		const textFinal = Chalk[color](
+			`[${time}][${level}][${nameLog}] ${systemHighlight}` +
+			(action ? ` >  ${actionHighlight}` : '') +
+			(texts.length ? `  ${textHighlight}` : '')
+		);
 
 		if(errors.length) {
 			loggerStack[levelStr.toLowerCase()](
@@ -135,9 +139,7 @@ module.exports = function(nameLog = 'default', levelLog = 'all', pathSave = null
 				layout: { type: 'colorConsole' }
 			},
 			stack: {
-				type: 'logLevelFilter',
-				appender: 'console',
-				level: 'all'
+				type: 'console',
 			},
 		};
 
@@ -153,7 +155,7 @@ module.exports = function(nameLog = 'default', levelLog = 'all', pathSave = null
 	loggerStack = Log4js.getLogger('stack');
 
 	const logger = Log4js.getLogger('default');
-	logger.info('日志', '加载', pathSave ? `✔, 日志路径{${pathSave}}` : '✔');
+	logger.info('日志', '加载', pathSave ? `✔  日志路径{${pathSave}}` : '✔');
 
 	return logger;
 };

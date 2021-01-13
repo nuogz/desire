@@ -12,14 +12,12 @@
 		"@koa/multer": "^3.0.0",
 		"axios": "^0.21.1",
 		"chalk": "^4.1.0",
-		"commander": "^2.20.3",
-		"form-data": "^3.0.0",
-		"koa": "^2.13.0",
+		"koa": "^2.13.1",
 		"koa-bodyparser": "^4.3.0",
 		"koa-compress": "^5.0.1",
 		"koa-helmet": "^6.0.0",
 		"koa-mount": "^4.0.0",
-		"koa-router": "^9.4.0",
+		"koa-router": "^10.0.0",
 		"koa-static": "^5.0.0",
 		"log4js": "^6.3.0",
 		"moment": "^2.29.1",
@@ -27,6 +25,6 @@
 		"ws": "^7.4.2"
 	},
 	"devDependencies": {
-		"eslint": "^7.16.0"
+		"eslint": "^7.17.0"
 	}
 }
