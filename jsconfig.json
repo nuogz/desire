@@ -1,0 +1,9 @@
+{
+	"compilerOptions": {
+		"module": "commonJS",
+		"target": "esnext",
+		"experimentalDecorators": true,
+	},
+	"exclude": [
+	]
+}

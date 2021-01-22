@@ -9,7 +9,7 @@ module.exports = async function($) {
 			$.harb = await require(harb)($);
 		}
 		else {
-			$.harb = await require('./default')($);
+			$.harb = await require('@nuogz/desire-harb-default')($);
 		}
 
 		G.info('服务', '加载[接口]', '✔');
