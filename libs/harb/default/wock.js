@@ -76,7 +76,7 @@ module.exports = async function($) {
 			}
 			catch(error) {
 				if(error.message.indexOf('CLOSED') == -1) {
-					G.error('套接', `事件{${type}}`, error);
+					G.error('服务', `Socket事件{${type}}`, error);
 				}
 			}
 		};

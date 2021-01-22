@@ -5,12 +5,12 @@ module.exports = async function($) {
 		const handle = rout.handle;
 
 		if(!handle) {
-			G.warn('服务', `加载 [接口], 路由{${rout.path}}`, '缺少对应的[流程]代码');
+			G.warn('服务', `加载[接口]{${rout.path}}`, '缺少对应的[流程]代码');
 
 			return;
 		}
 		else {
-			G.debug('服务', `加载 [接口], 路由{${rout.path}}`);
+			G.debug('服务', `加载[接口]{${rout.path}}`);
 		}
 
 		if(rout.upload === true) {
@@ -37,7 +37,7 @@ module.exports = async function($) {
 			catch(error) {
 				ctx.status == 500;
 
-				G.error('路由', error);
+				G.error('服务', '运行[接口]', error);
 			}
 		});
 

@@ -105,7 +105,7 @@ module.exports = class Desire {
 	}
 
 	async parseServ() {
-		const { G, serv, koa, router, C: { host, port } } = this;
+		const { G, serv, koa, router, C: { http2, host, port } } = this;
 
 		// 加载路由
 		koa.use(router.routes());
@@ -116,10 +116,10 @@ module.exports = class Desire {
 		// 处理错误
 		serv.on('error', function(error) {
 			if(error.code == 'EADDRINUSE') {
-				G.fatal('服务', `监听 [端口]{${host}:${port}}: 端口已被占用`);
+				G.fatal('服务', `监听{${http2 && http2.enabled ? 'http2' : 'http'}://${host}:${port}}`, '端口已被占用');
 			}
 			else {
-				G.fatal('服务', error);
+				G.fatal('服务', '发生[错误]', error);
 			}
 
 			process.exit();

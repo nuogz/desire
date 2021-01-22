@@ -10,9 +10,9 @@ module.exports = async function({ koa, G }) {
 			koa.use(Mount(prefix, Static(path, fold.option)));
 		}
 		catch(error) {
-			G.error('服务', `加载 [映射], 路由{${prefix}}, 文件路径{${path}}`, error);
+			G.error('服务', `加载[映射]{${prefix}}, 文件路径{${path}}`, error);
 		}
 
-		G.debug('服务', `加载 [映射], 路由{${prefix}}, 文件路径{${path}}`);
+		G.debug('服务', `加载[映射]{${prefix}}, 文件路径{${path}}`);
 	};
 };
