@@ -13,7 +13,7 @@ module.exports = class Desire {
 			this.G = G;
 		}
 		else {
-			const G = require('./libs/log');
+			const G = require('@nuogz/gaia/log');
 			const configLog = C.log || {};
 
 			this.G = G(configLog.nameLog, configLog.levelLog, configLog.pathSave);

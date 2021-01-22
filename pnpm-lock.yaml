@@ -1,6 +1,7 @@
 dependencies:
   '@koa/cors': 3.1.0
   '@koa/multer': 3.0.0_multer@1.4.2
+  '@nuogz/gaia': 2.0.1
   axios: 0.21.1
   chalk: 4.1.0
   koa: 2.13.1
@@ -71,6 +72,14 @@ packages:
       multer: '*'
     resolution:
       integrity: sha512-y+OQBmex5D1jIl723gAEUYcAWPEicIXppaAKw/zCMfpllQ08ZNweDPwoCLxEoatqd5pCu2XG6V8dl67JRq3RJw==
+  /@nuogz/gaia/2.0.1:
+    dependencies:
+      chalk: 4.1.0
+      log4js: 6.3.0
+      moment: 2.29.1
+    dev: false
+    resolution:
+      integrity: sha512-iPyKelq4ZU2SHJJiwpACbhJlgKQMBvJsempzBE+OxAM3OuInVl6daS/vBdiJ8l7vj2Iutwlf3VJunOrI6a8AUg==
   /accepts/1.3.7:
     dependencies:
       mime-types: 2.1.28
@@ -1530,6 +1539,7 @@ packages:
 specifiers:
   '@koa/cors': ^3.1.0
   '@koa/multer': ^3.0.0
+  '@nuogz/gaia': ^2.0.1
   axios: ^0.21.1
   chalk: ^4.1.0
   eslint: ^7.18.0
