@@ -1,6 +1,6 @@
 {
 	"name": "@nuogz/desire",
-	"version": "4.5.3",
+	"version": "4.6.0",
 	"description": "A simple wrapper for koa.",
 	"author": "Nuogz",
 	"license": "LGPL-3.0-or-later",
@@ -10,11 +10,12 @@
 	},
 	"dependencies": {
 		"@koa/cors": "^3.1.0",
-		"@nuogz/desire-harb-default": "^4.0.1",
+		"@nuogz/desire-harb-default": "^4.1.0",
 		"@nuogz/gaia": "^2.0.1",
 		"koa": "^2.13.1",
 		"koa-bodyparser": "^4.3.0",
 		"koa-compress": "^5.0.1",
+		"koa-favicon": "^2.1.0",
 		"koa-helmet": "^6.0.0",
 		"koa-router": "^10.0.0"
 	}

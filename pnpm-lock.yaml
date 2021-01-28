@@ -1,10 +1,11 @@
 dependencies:
   '@koa/cors': 3.1.0
-  '@nuogz/desire-harb-default': 4.0.1
+  '@nuogz/desire-harb-default': 4.1.0
   '@nuogz/gaia': 2.0.1
   koa: 2.13.1
   koa-bodyparser: 4.3.0
   koa-compress: 5.0.1
+  koa-favicon: 2.1.0
   koa-helmet: 6.0.0
   koa-router: 10.0.0
 devDependencies:
@@ -64,7 +65,7 @@ packages:
       multer: '*'
     resolution:
       integrity: sha512-y+OQBmex5D1jIl723gAEUYcAWPEicIXppaAKw/zCMfpllQ08ZNweDPwoCLxEoatqd5pCu2XG6V8dl67JRq3RJw==
-  /@nuogz/desire-harb-default/4.0.1:
+  /@nuogz/desire-harb-default/4.1.0:
     dependencies:
       '@koa/multer': 3.0.0_multer@1.4.2
       axios: 0.21.1
@@ -74,7 +75,7 @@ packages:
       ws: 7.4.2
     dev: false
     resolution:
-      integrity: sha512-GKVoVIeInbRUsCPy23j7HH7X/PqaPVvkGfomMsxZXlXLQS98dCxIi4Q0BJWPhNuGV6HDD+jYC/eVdLmx5YqeWg==
+      integrity: sha512-ZjJGdxFcxa3jcEpLva2arX0qsyOjH2Tx/Jz0GXqHEDY5Ic0zlcLb/iFKeVtaCBRoRj1NUI5F0+Em92viCrXelA==
   /@nuogz/gaia/2.0.1:
     dependencies:
       chalk: 4.1.0
@@ -174,7 +175,7 @@ packages:
       integrity: sha512-Z7tMw1ytTXt5jqMcOP+OQteU1VuNK9Y02uuJtKQ1Sv69jXQKKg5cibLwGJow8yzZP+eAc18EmLGPal0bp36rvQ==
   /axios/0.21.1:
     dependencies:
-      follow-redirects: 1.13.1
+      follow-redirects: 1.13.2
     dev: false
     resolution:
       integrity: sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==
@@ -616,7 +617,7 @@ packages:
     dev: true
     resolution:
       integrity: sha512-zAoAQiudy+r5SvnSw3KJy5os/oRJYHzrzja/tBDqrZtNhUw8bt6y8OBzMWcjWr+8liV8Eb6yOhw8WZ7VFZ5ZzA==
-  /follow-redirects/1.13.1:
+  /follow-redirects/1.13.2:
     dev: false
     engines:
       node: '>=4.0'
@@ -626,7 +627,7 @@ packages:
       debug:
         optional: true
     resolution:
-      integrity: sha512-SSG5xmZh1mkPGyKzjZP8zLjltIfpW32Y5QpdNJyjcfGxK3qo3NDDkZOZSFiGn1A6SclQxY9GzEwAHQ3dmYRWpg==
+      integrity: sha512-6mPTgLxYm3r6Bkkg0vNM0HTjfGrOEtsfbhagQvbxDEsEkpNhw582upBaoRZylzen6krEmxXJgt9Ju6HiI4O7BA==
   /fresh/0.5.2:
     dev: false
     engines:
@@ -908,6 +909,12 @@ packages:
       node: '>= 4'
     resolution:
       integrity: sha1-2kCHXfSd4FOQmNFwC1CCDOvNIdA=
+  /koa-favicon/2.1.0:
+    dependencies:
+      mz: 2.7.0
+    dev: false
+    resolution:
+      integrity: sha512-LvukcooYjxKtnZq0RXdBup+JDhaHwLgnLlDHB/xvjwQEjbc4rbp/0WkmOzpOvaHujc+fIwPear0dpKX1V+dHVg==
   /koa-helmet/6.0.0:
     dependencies:
       helmet: 4.4.1
@@ -1096,6 +1103,14 @@ packages:
       node: '>= 0.10.0'
     resolution:
       integrity: sha512-xY8pX7V+ybyUpbYMxtjM9KAiD9ixtg5/JkeKUTD6xilfDv0vzzOFcCp4Ljb1UU3tSOM3VTZtKo63OmzOrGi3Cg==
+  /mz/2.7.0:
+    dependencies:
+      any-promise: 1.3.0
+      object-assign: 4.1.1
+      thenify-all: 1.6.0
+    dev: false
+    resolution:
+      integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==
   /natural-compare/1.4.0:
     dev: true
     resolution:
@@ -1419,6 +1434,20 @@ packages:
     dev: true
     resolution:
       integrity: sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
+  /thenify-all/1.6.0:
+    dependencies:
+      thenify: 3.3.1
+    dev: false
+    engines:
+      node: '>=0.8'
+    resolution:
+      integrity: sha1-GhkY1ALY/D+Y+/I02wvMjMEOlyY=
+  /thenify/3.3.1:
+    dependencies:
+      any-promise: 1.3.0
+    dev: false
+    resolution:
+      integrity: sha512-RVZSIV5IG10Hk3enotrhvz0T9em6cyHBLkH/YAZuKqd8hRkKhSfCGIcP2KUY0EPxndzANBmNllzWPwak+bheSw==
   /toidentifier/1.0.0:
     dev: false
     engines:
@@ -1541,11 +1570,12 @@ packages:
       integrity: sha512-faQrqNMzcPCHGVC2aaOINk13K+aaBDUPjGWl0teOXywElLjyVAB6Oe2jj62jHYtwsU49jXhScYbvPENK+6zAvQ==
 specifiers:
   '@koa/cors': ^3.1.0
-  '@nuogz/desire-harb-default': ^4.0.1
+  '@nuogz/desire-harb-default': ^4.1.0
   '@nuogz/gaia': ^2.0.1
   eslint: ^7.18.0
   koa: ^2.13.1
   koa-bodyparser: ^4.3.0
   koa-compress: ^5.0.1
+  koa-favicon: ^2.1.0
   koa-helmet: ^6.0.0
   koa-router: ^10.0.0

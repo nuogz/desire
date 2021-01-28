@@ -1,10 +1,3 @@
-const H1 = require('http');
-const H2 = require('http2');
-const FS = require('fs');
-
-const KoaServ = require('koa');
-const KoaRouter = require('koa-router');
-
 module.exports = class Desire {
 	constructor(C, G) {
 		this.C = C;
@@ -13,14 +6,22 @@ module.exports = class Desire {
 			this.G = G;
 		}
 		else {
-			const G = require('@nuogz/gaia/log');
 			const configLog = C.log || {};
 
+			const G = require('@nuogz/gaia/log');
 			this.G = G(configLog.nameLog, configLog.levelLog, configLog.pathSave);
 		}
 
+		this.nameLog = typeof C.name == 'string' ? C.name : 'Desire';
+
+		const H1 = require('http');
+		const H2 = require('http2');
 		this.serv = C.http2 && C.http2.enabled ? H2.createSecureServer(this.loadCert()) : H1.createServer();
+
+		const KoaServ = require('koa');
 		this.koa = new KoaServ();
+
+		const KoaRouter = require('koa-router');
 		this.router = KoaRouter({ prefix: C.path || '/' });
 	}
 
@@ -28,29 +29,25 @@ module.exports = class Desire {
 		const C = this.C;
 
 		try {
-			// 通用请求头
 			this.loadHead();
+			this.loadFavicon();
+			await this.loadHarb();
+			await this.loadServ();
 
-			// 路由对接
-			if(this.harb !== false) {
-				await require('./libs/harb')(this);
-			}
-
-			// 绑定并启动服务
-			await this.parseServ();
-
-			this.G.info('服务', `监听{${C.http2 && C.http2.enabled ? 'http2' : 'http'}://${C.host}:${C.port}}`, `✔`);
+			this.G.info(this.nameLog, `监听{${C.http2 && C.http2.enabled ? 'http2' : 'http'}://${C.host}:${C.port}}`, `✔`);
 		}
 		catch(error) {
-			this.G.fatal('服务', `监听{${C.http2 && C.http2.enabled ? 'http2' : 'http'}://${C.host}:${C.port}}`, error);
+			this.G.fatal(this.nameLog, `监听{${C.http2 && C.http2.enabled ? 'http2' : 'http'}://${C.host}:${C.port}}`, error);
 		}
 
 		return this;
 	}
 
+	/** 加载HTTPS证书 */
 	loadCert() {
 		const { C: { perm } } = this;
 
+		const FS = require('fs');
 		return {
 			allowHTTP1: true,
 			key: FS.readFileSync(perm.key),
@@ -58,28 +55,29 @@ module.exports = class Desire {
 		};
 	}
 
+	/** 加载通用请求头 */
 	loadHead() {
 		const { koa, C: { cors } } = this;
 
-		const Compress = require('koa-compress');
-		const BodyParser = require('koa-bodyparser');
-		const Cors = require('@koa/cors');
-		const Helmet = require('koa-helmet');
-
 		// zlib压缩
+		const Compress = require('koa-compress');
+		const { constants: { Z_SYNC_FLUSH } } = require('zlib');
 		koa.use(Compress({
 			threshold: 2048,
-			gzip: { flush: require('zlib').constants.Z_SYNC_FLUSH },
-			deflate: { flush: require('zlib').constants.Z_SYNC_FLUSH },
+			gzip: { flush: Z_SYNC_FLUSH },
+			deflate: { flush: Z_SYNC_FLUSH },
 		}));
 
 		// 请求参数解析
+		const BodyParser = require('koa-bodyparser');
 		koa.use(BodyParser());
 
-		// // cors请求头
+		// cors请求头
+		const Cors = require('@koa/cors');
 		if(cors) { koa.use(Cors()); }
 
 		// hsts请求头
+		const Helmet = require('koa-helmet');
 		koa.use(Helmet.contentSecurityPolicy({
 			directives: {
 				defaultSrc: ['\'self\''],
@@ -104,7 +102,46 @@ module.exports = class Desire {
 		koa.use(Helmet.xssFilter());
 	}
 
-	async parseServ() {
+	/** 加载Favicon图片 */
+	loadFavicon() {
+		const { G, C: { favicon }, koa } = this;
+
+		if(favicon && typeof favicon == 'string') {
+			const Favicon = require('koa-favicon');
+			koa.use(Favicon(favicon));
+
+			G.debug(this.nameLog, '加载[Favicon]', `文件路径{${favicon}}`);
+		}
+	}
+
+	/** 加载路由 */
+	async loadHarb() {
+		const { G, C: { harb } } = this;
+
+		if(harb !== false) {
+
+			try {
+				if(typeof harb == 'function') {
+					this.harb = await harb(this);
+				}
+				else if(harb != 'default' && typeof harb == 'string') {
+					this.harb = await require(harb)(this);
+				}
+				else {
+					this.harb = await require('@nuogz/desire-harb-default')(this);
+				}
+
+				G.info(this.nameLog, '加载[接口]', '✔');
+			}
+			catch(error) {
+				G.fatal(this.nameLog, '加载[接口]', error);
+			}
+		}
+	}
+
+
+	/** 绑定路由并监听端口 */
+	async loadServ() {
 		const { G, serv, koa, router, C: { http2, host, port } } = this;
 
 		// 加载路由
@@ -116,10 +153,10 @@ module.exports = class Desire {
 		// 处理错误
 		serv.on('error', function(error) {
 			if(error.code == 'EADDRINUSE') {
-				G.fatal('服务', `监听{${http2 && http2.enabled ? 'http2' : 'http'}://${host}:${port}}`, '端口已被占用');
+				G.fatal(this.nameLog, `监听{${http2 && http2.enabled ? 'http2' : 'http'}://${host}:${port}}`, '端口已被占用');
 			}
 			else {
-				G.fatal('服务', '发生[错误]', error);
+				G.fatal(this.nameLog, '发生[错误]', error);
 			}
 
 			process.exit();
