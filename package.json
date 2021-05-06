@@ -1,7 +1,7 @@
 {
 	"name": "@nuogz/desire",
 	"version": "4.6.1",
-	"description": "A simple wrapper for koa.",
+	"description": "A simple wrapper for koa",
 	"author": "Nuogz",
 	"license": "LGPL-3.0-or-later",
 	"main": "index.js",
