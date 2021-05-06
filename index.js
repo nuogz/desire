@@ -8,7 +8,7 @@ module.exports = class Desire {
 		else {
 			const configLog = C.log || {};
 
-			const G = require('@nuogz/gaia/log');
+			const G = require('@nuogz/hades');
 			this.G = G(configLog.nameLog, configLog.levelLog, configLog.pathSave);
 		}
 
