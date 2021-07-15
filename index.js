@@ -16,7 +16,7 @@ import Favicon from 'koa-favicon';
 /**
  * #### 服务器系统（渴望）
  * - 基于`koajs`封装的简单服务器
- * @version 4.10.0-2021.07.15.01
+ * @version 4.10.1-2021.07.15.02
  * @class
  */
 class Desire {
@@ -254,10 +254,10 @@ class Desire {
 					this.harb = await harb(this);
 				}
 				else if(harb != 'default' && typeof harb == 'string') {
-					this.harb = await import(harb)(this);
+					this.harb = await (await import(harb)).default(this);
 				}
 				else {
-					this.harb = await import('@nuogz/desire-harb-default')(this);
+					this.harb = await (await import('@nuogz/desire-harb-default')).default(this);
 				}
 
 				logInfo('加载[港湾]', '✔ ');

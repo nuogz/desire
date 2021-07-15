@@ -1,6 +1,6 @@
 {
 	"name": "@nuogz/desire",
-	"version": "4.10.0",
+	"version": "4.10.1",
 	"description": "A simple wrapper for koa",
 	"author": "Nuogz",
 	"license": "LGPL-3.0-or-later",
