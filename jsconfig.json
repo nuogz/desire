@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"module": "commonJS",
+		"module": "esnext",
 		"moduleResolution": "node",
 		"target": "esnext",
 		"experimentalDecorators": true,
