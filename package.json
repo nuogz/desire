@@ -14,7 +14,7 @@
 	},
 	"dependencies": {
 		"@koa/cors": "^3.1.0",
-		"@nuogz/desire-harb-default": "^4.5.3",
+		"@nuogz/desire-harb-default": "^4.5.4",
 		"koa": "^2.13.1",
 		"koa-bodyparser": "^4.3.0",
 		"koa-compress": "^5.0.1",
