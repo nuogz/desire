@@ -1,10 +1,8 @@
 import { readFileSync } from 'fs';
 import { createServer } from 'http';
 import { createSecureServer } from 'http2';
-import { posix } from 'path';
 
 import Koa from 'koa';
-import KoaRouter from 'koa-router';
 
 import Compress from 'koa-compress';
 import { constants } from 'zlib';
@@ -16,16 +14,15 @@ import Favicon from 'koa-favicon';
 /**
  * #### 服务器系统（渴望）
  * - 基于`koajs`封装的简单服务器
- * @version 4.10.4-2021.07.16.03
+ * @version 4.11.0-2021.07.26.01
  * @class
  */
 class Desire {
 	/**
 	 * 接口配置
 	 * @typedef {Object} FaceConfig
-	 * @property {string} method 请求方法
+	 * @property {string} method 请求方法：使用`.`分割。默认支持`koa-router`中使用的方法（一般为HTTP 1.1协议所支持的方法），以及值`wock`用于Wock接口
 	 * @property {string} route 路由
-	 * @property {bolean} [wock] Wock接口级别：默认`false`，不启用Wock接口；`true`同时启用Wock接口，`'only'`只启用Wock接口
 	 * @property {Function} handle 处理请求的函数
 	 * @property {boolean} upload 是否支持文件上传：未定义或`true`禁用；`false`启用
 	 */
@@ -122,15 +119,11 @@ class Desire {
 		 */
 		this.C = C;
 
-		const { facePrefix } = C;
-
-
 		this.initLogger();
 		this.initHTTP2();
 
 		this.server = this.http2 ? createSecureServer(this.http2) : createServer();
 		this.koa = new Koa();
-		this.router = KoaRouter({ prefix: posix.join('/', facePrefix ?? '/') });
 
 		this.initHeader();
 		this.initFavIcon();
@@ -274,10 +267,7 @@ class Desire {
 	 * @async
 	 */
 	async initServer() {
-		const { C: { host, port }, server, koa, router, logFatal } = this;
-
-		// 加载路由
-		koa.use(router.routes());
+		const { C: { host, port }, server, koa, logFatal } = this;
 
 		// 监听请求
 		server.on('request', koa.callback());
