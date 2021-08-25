@@ -14,7 +14,7 @@ import Favicon from 'koa-favicon';
 /**
  * #### 服务器系统（渴望）
  * - 基于`koajs`封装的简单服务器
- * @version 4.11.2-2021.07.27.02
+ * @version 4.11.3-2021.08.26.01
  * @class
  */
 class Desire {
@@ -156,10 +156,10 @@ class Desire {
 			}
 			catch(e) { void 0; }
 
-			logInfo(`监听{${this.protocol}://${host}:${port}}`, `✔ `);
+			logInfo(`监听~{${this.protocol}://${host}:${port}}`, `✔ `);
 		}
 		catch(error) {
-			logFatal(`监听{${this.protocol}://${host}:${port}}`, error);
+			logFatal(`监听~{${this.protocol}://${host}:${port}}`, error);
 		}
 
 		return this;
@@ -230,7 +230,7 @@ class Desire {
 		if(favicon && typeof favicon == 'string') {
 			koa.use(Favicon(favicon));
 
-			logDebug('加载[Favicon]', `文件路径{${favicon}}`);
+			logDebug('加载~[Favicon]', `~[文件路径]~{${favicon}}`);
 		}
 	}
 
@@ -253,10 +253,10 @@ class Desire {
 					this.harb = await (await import('@nuogz/desire-harb-default')).default(this);
 				}
 
-				logInfo('加载[港湾]', '✔ ');
+				logInfo('加载~[港湾]', '✔ ');
 			}
 			catch(error) {
-				logFatal('加载[港湾]', error);
+				logFatal('加载~[港湾]', error);
 			}
 		}
 	}
@@ -275,10 +275,10 @@ class Desire {
 		// 监听错误
 		server.on('error', function(error) {
 			if(error.code == 'EADDRINUSE') {
-				logFatal(`监听{${this.protocol}://${host}:${port}}`, '端口已被占用');
+				logFatal(`监听~{${this.protocol}://${host}:${port}}`, '✖ 端口已被占用');
 			}
 			else {
-				logFatal('发生[错误]', error);
+				logFatal('发生~[错误]', error);
 			}
 
 			process.exit();
