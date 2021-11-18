@@ -14,7 +14,7 @@ import Favicon from 'koa-favicon';
 /**
  * #### 服务器系统（渴望）
  * - 基于`koajs`封装的简单服务器
- * @version 4.11.5-2021.09.24.01
+ * @version 4.11.6-2021.09.27.01
  * @class
  */
 class Desire {
@@ -207,8 +207,6 @@ class Desire {
 				styleSrc: ['\'self\'', 'https:', '\'unsafe-inline\''],
 				imgSrc: ['\'self\'', 'https:', 'data:'],
 				fontSrc: ['\'self\'', 'https:', 'data:'],
-				upgradeInsecureRequests: [],
-				blockAllMixedContent: [],
 			},
 		}));
 		koa.use(Helmet.expectCt());
