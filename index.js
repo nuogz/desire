@@ -14,7 +14,7 @@ import Favicon from 'koa-favicon';
 /**
  * #### 服务器系统（渴望）
  * - 基于`koajs`封装的简单服务器
- * @version 4.11.8-2021.11.25.01
+ * @version 4.11.9-2021.12.15.01
  * @class
  */
 class Desire {
