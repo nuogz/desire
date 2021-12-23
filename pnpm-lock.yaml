@@ -2,8 +2,8 @@ lockfileVersion: 5.3
 
 specifiers:
   '@koa/cors': ^3.1.0
-  '@nuogz/desire-harb-default': ^4.9.1
-  eslint: ^8.4.1
+  '@nuogz/desire-harb-default': ^4.9.2
+  eslint: ^8.5.0
   koa: ^2.13.4
   koa-bodyparser: ^4.3.0
   koa-compress: ^5.1.0
@@ -12,7 +12,7 @@ specifiers:
 
 dependencies:
   '@koa/cors': 3.1.0
-  '@nuogz/desire-harb-default': 4.9.1
+  '@nuogz/desire-harb-default': 4.9.2
   koa: 2.13.4
   koa-bodyparser: 4.3.0
   koa-compress: 5.1.0
@@ -20,7 +20,7 @@ dependencies:
   koa-helmet: 6.1.0
 
 devDependencies:
-  eslint: 8.4.1
+  eslint: 8.5.0
 
 packages:
 
@@ -72,8 +72,8 @@ packages:
       multer: 1.4.4
     dev: false
 
-  /@nuogz/desire-harb-default/4.9.1:
-    resolution: {integrity: sha512-8eIyt42RMOa/orQM57d8lRb+Y/ixUhC0L7l8RiGKTrJTUth8eyyrdMGXdfuL1N9xgC4CGOrtVzhKtYUze4Bsew==}
+  /@nuogz/desire-harb-default/4.9.2:
+    resolution: {integrity: sha512-vzDq/VFV7tfWddgdSQoX+xN3RNn6MswVzQHIalO2QM8r6InItwZE8b33Pj3AmL2GHsKa9yQmdu/mNFYTjQK9Fw==}
     engines: {node: '>=14.18.1'}
     dependencies:
       '@koa/multer': 3.0.0_multer@1.4.4
@@ -83,7 +83,7 @@ packages:
       koa-router: 10.1.1
       koa-static: 5.0.0
       multer: 1.4.4
-      ws: 8.3.0
+      ws: 8.4.0
     transitivePeerDependencies:
       - bufferutil
       - debug
@@ -389,13 +389,13 @@ packages:
       estraverse: 5.3.0
     dev: true
 
-  /eslint-utils/3.0.0_eslint@8.4.1:
+  /eslint-utils/3.0.0_eslint@8.5.0:
     resolution: {integrity: sha512-uuQC43IGctw68pJA1RgbQS8/NP7rch6Cwd4j3ZBtgo4/8Flj4eGE7ZYSZRN3iq5pVUv6GPdW5Z1RFleo84uLDA==}
     engines: {node: ^10.0.0 || ^12.0.0 || >= 14.0.0}
     peerDependencies:
       eslint: '>=5'
     dependencies:
-      eslint: 8.4.1
+      eslint: 8.5.0
       eslint-visitor-keys: 2.1.0
     dev: true
 
@@ -409,8 +409,8 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
-  /eslint/8.4.1:
-    resolution: {integrity: sha512-TxU/p7LB1KxQ6+7aztTnO7K0i+h0tDi81YRY9VzB6Id71kNz+fFYnf5HD5UOQmxkzcoa0TlVZf9dpMtUv0GpWg==}
+  /eslint/8.5.0:
+    resolution: {integrity: sha512-tVGSkgNbOfiHyVte8bCM8OmX+xG9PzVG/B4UCF60zx7j61WIVY/AqJECDgpLD4DbbESD0e174gOg3ZlrX15GDg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     hasBin: true
     dependencies:
@@ -424,7 +424,7 @@ packages:
       enquirer: 2.3.6
       escape-string-regexp: 4.0.0
       eslint-scope: 7.1.0
-      eslint-utils: 3.0.0_eslint@8.4.1
+      eslint-utils: 3.0.0_eslint@8.5.0
       eslint-visitor-keys: 3.1.0
       espree: 9.2.0
       esquery: 1.4.0
@@ -959,8 +959,8 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
 
-  /object-inspect/1.11.1:
-    resolution: {integrity: sha512-If7BjFlpkzzBeV1cqgT3OSWT3azyoxDGajR+iGnFBfVV2EWyDyWaZZW2ERDjUaY2QM8i5jI3Sj7mhsM4DDAqWA==}
+  /object-inspect/1.12.0:
+    resolution: {integrity: sha512-Ho2z80bVIvJloH+YzRmpZVQe87+qASmBUKZDWgx9cu+KDrX2ZDH/3tMy+gXbZETVGs2M8YdxObOh7XAtim9Y0g==}
     dev: false
 
   /on-finished/2.3.0:
@@ -1144,7 +1144,7 @@ packages:
     dependencies:
       call-bind: 1.0.2
       get-intrinsic: 1.1.1
-      object-inspect: 1.11.1
+      object-inspect: 1.12.0
     dev: false
 
   /statuses/1.5.0:
@@ -1283,8 +1283,8 @@ packages:
     resolution: {integrity: sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=}
     dev: true
 
-  /ws/8.3.0:
-    resolution: {integrity: sha512-Gs5EZtpqZzLvmIM59w4igITU57lrtYVFneaa434VROv4thzJyV6UjIL3D42lslWlI+D4KzLYnxSwtfuiO79sNw==}
+  /ws/8.4.0:
+    resolution: {integrity: sha512-IHVsKe2pjajSUIl4KYMQOdlyliovpEPquKkqbwswulszzI7r0SfQrxnXdWAEqOlDCLrVSJzo+O1hAwdog2sKSQ==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1

@@ -14,7 +14,7 @@ import Favicon from 'koa-favicon';
 /**
  * #### 服务器系统（渴望）
  * - 基于`koajs`封装的简单服务器
- * @version 4.11.9-2021.12.15.01
+ * @version 4.11.11-2021.12.21.01
  * @class
  */
 class Desire {
@@ -156,7 +156,7 @@ class Desire {
 			}
 			catch(e) { void 0; }
 
-			logInfo(`监听~{${this.protocol}://${host}:${port}}`, `✔ `);
+			logInfo(`监听~{${this.protocol}://${host == '0.0.0.0' ? 'localhost' : host}:${port}}`, `✔ `);
 		}
 		catch(error) {
 			logFatal(`监听~{${this.protocol}://${host}:${port}}`, error);
