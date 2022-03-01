@@ -11,13 +11,22 @@ import Helmet from 'koa-helmet';
 import Favicon from 'koa-favicon';
 
 
+import context from 'koa/lib/context';
+import response from 'koa/lib/response';
+import request from 'koa/lib/request';
+
 /**
  * #### 服务器系统（渴望）
  * - 基于`koajs`封装的简单服务器
- * @version 4.11.14-2022.02.15.01
+ * @version 4.11.15-2022.03.01.01
  * @class
  */
 class Desire {
+	static KoaContext = context;
+	static KoaResponse = response;
+	static KoaRequest = request;
+
+
 	/**
 	 * 接口配置
 	 * @typedef {Object} FaceConfig
