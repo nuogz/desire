@@ -18,10 +18,10 @@ import request from 'koa/lib/request';
 /**
  * #### 服务器系统（渴望）
  * - 基于`koajs`封装的简单服务器
- * @version 4.11.16-2022.03.29.01
+ * @version 4.12.0-2022.05.11.01
  * @class
  */
-class Desire {
+ export default class Desire {
 	static KoaContext = context;
 	static KoaResponse = response;
 	static KoaRequest = request;
@@ -378,5 +378,3 @@ class Desire {
 		}
 	}
 }
-
-export default Desire;
