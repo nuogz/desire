@@ -18,7 +18,7 @@ import request from 'koa/lib/request';
 /**
  * #### 服务器系统（渴望）
  * - 基于`koajs`封装的简单服务器
- * @version 4.12.1-2022.05.11.02
+ * @version 4.12.2-2022.06.01.01
  * @class
  */
  export default class Desire {
