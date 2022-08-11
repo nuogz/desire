@@ -1,20 +1,30 @@
 {
 	"name": "@nuogz/desire",
-	"version": "4.12.3",
-	"description": "A simple wrapper for koa",
+	"version": "5.0.0",
+	"description": "simple server library based on koa",
 	"author": "Nuogz",
 	"license": "LGPL-3.0-or-later",
-	"main": "index.js",
+	"main": "./index.js",
 	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "github:nuogz/desire"
+	},
+	"files": [
+		"index.js",
+		"lib/**",
+		"locale/**"
+	],
 	"engines": {
 		"node": ">=14.18.1"
 	},
 	"devDependencies": {
-		"eslint": "^8.19.0"
+		"eslint": "^8.21.0"
 	},
 	"dependencies": {
 		"@koa/cors": "^3.3.0",
-		"@nuogz/desire-harb-default": "^4.10.5",
+		"@nuogz/desire-harb-default": "^5.0.2",
+		"@nuogz/i18n": "^1.2.0",
 		"koa": "^2.13.4",
 		"koa-bodyparser": "^4.3.0",
 		"koa-compress": "^5.1.0",

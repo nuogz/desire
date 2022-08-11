@@ -1,0 +1,12 @@
+{
+	"translation": {
+		"error": {
+			"missServerConfig": "miss ~[Server Config]"
+		},
+		"listenPort": "listen {{-url,hadesValue}}",
+		"listenPortError": "✖ Port has been used",
+		"initFavicon": "init ~[Favicon]",
+		"initFaviconParam": "~[path]{{-favicon,hadesValue}}",
+		"initHarb": "init ~[Harb]"
+	}
+}

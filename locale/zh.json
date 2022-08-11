@@ -1,0 +1,12 @@
+{
+	"translation": {
+		"error": {
+			"missServerConfig": "缺少 服务器配置"
+		},
+		"listenPort": "监听 {{-url}}",
+		"listenPortError": "✖ 端口已被占用",
+		"initFavicon": "加载 Favicon",
+		"initFaviconParam": "文件路径{{-favicon}}",
+		"initHarb": "加载 港湾"
+	}
+}
