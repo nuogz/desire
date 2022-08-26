@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v5.0.1 - 2022.08.11 18
+* bump up dependencies
+* improve develop configs
+
+
 ## v5.0.0 - 2022.08.11 18
 * tweak all files for publishing to npm
 * start use `CHANGLOG.md` since version `v5.0.0`
