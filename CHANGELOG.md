@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v5.0.2 - 2022.08.11 18
+* bump up `@nuogz/desire-harb-default` to `5.2.0`
+* bump up dependencies
+
+
 ## v5.0.1 - 2022.08.11 18
 * bump up dependencies
 * improve develop configs
