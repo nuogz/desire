@@ -141,7 +141,7 @@ packages:
     resolution: {integrity: sha512-iCc9Z/2/qrMfTSpdNUzveAryr7lzw99qfTZ6pOtURTUw1KqeO+0f+EZZqfAkjaM0Vy9ZfhR0KCWs60IfhSVtSQ==}
     engines: {node: '>=14.18.1'}
     dependencies:
-      '@nuogz/utility': 1.4.0
+      '@nuogz/utility': 1.4.1
       i18next: 21.9.1
     dev: false
 
@@ -150,8 +150,8 @@ packages:
     engines: {node: '>=14.18.1'}
     dev: false
 
-  /@nuogz/utility/1.4.0:
-    resolution: {integrity: sha512-gCZk7tqXrafkrFh3jYwzZX4sKV6obs7NYdG219rzThJRQis+ZgGGHREafmY+zjqqHyEutFL6XL71UzkIkH0ADQ==}
+  /@nuogz/utility/1.4.1:
+    resolution: {integrity: sha512-KqTCDytO5PCorgoYDtJSVo+Z89TxdVnaOB7ZKGAZbuEA+FKL0Ytww4h8dKyeXZhfH3UN+YJvjG0+Ly82TLsy1w==}
     engines: {node: '>=14.18.1'}
     dependencies:
       '@nuogz/json-bigint': 1.0.0
@@ -1057,7 +1057,7 @@ packages:
     dev: true
 
   /media-typer/0.3.0:
-    resolution: {integrity: sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ==}
+    resolution: {integrity: sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=}
     engines: {node: '>= 0.6'}
     dev: false
 

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v5.1.0 - 2022.09.16 14
+* add option `compress` for able to disable `koa-compress` by default
+
+
 ## v5.0.2 - 2022.08.11 18
 * bump up `@nuogz/desire-harb-default` to `5.2.0`
 * bump up dependencies

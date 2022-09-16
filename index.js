@@ -10,10 +10,10 @@ import Cors from '@koa/cors';
 import Helmet from 'koa-helmet';
 import Favicon from 'koa-favicon';
 
-
 import context from 'koa/lib/context';
 import response from 'koa/lib/response';
 import request from 'koa/lib/request';
+
 import { T, TT } from './lib/i18n.js';
 
 
@@ -124,6 +124,9 @@ export default class Desire {
 	 * @property {string} [favicon] path of icon file
 	 *
 	 * @property {string} [locale] locale for log
+	 *
+	 * @property {false|Compress.CompressOptions} [compress] compress options
+	 *
 	 */
 
 	/**
@@ -213,11 +216,13 @@ export default class Desire {
 		const koa = this.koa;
 
 		// zlib
-		koa.use(Compress({
-			threshold: 2048,
-			gzip: { flush: constants.Z_SYNC_FLUSH },
-			deflate: { flush: constants.Z_SYNC_FLUSH },
-		}));
+		if(this.C.compress !== false) {
+			koa.use(Compress(Object.assign({}, this.C.compress, {
+				threshold: 2048,
+				gzip: { flush: constants.Z_SYNC_FLUSH },
+				deflate: { flush: constants.Z_SYNC_FLUSH },
+			})));
+		}
 
 		// cors header
 		koa.use(Cors());
