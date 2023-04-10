@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v6.0.0 - 2023.04.10 16
+* (break) `@nuogz/desire-harb-default` has been renamed to `@nuogz/desire-harbour`
+* (break) refactor config
+* reorganize all code. now `Harbour` is more independent from `Desire`
+* add `d.ts`
+* bump up `@nuogz/i18n` to `v3.1.0` and renew related code
+* renew locales
+* bump up dependencies
+
+
 ## v5.1.0 - 2022.09.16 14
 * add option `compress` for able to disable `koa-compress` by default
 

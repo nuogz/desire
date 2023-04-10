@@ -1,12 +1,14 @@
 {
-	"translation": {
-		"error": {
-			"missServerConfig": "缺少 服务器配置"
-		},
-		"listenPort": "监听 {{-url}}",
-		"listenPortError": "✖ 端口已被占用",
-		"initFavicon": "加载 Favicon",
-		"initFaviconParam": "文件路径{{-favicon}}",
-		"initHarb": "加载 港湾"
-	}
+	"listen@proto": "监听 {{-url}}",
+	"listen@hades": "监听 {{-url,value@hades}}",
+	"listenError@proto": "✖ ~[端口]已被占用",
+	"listenError@hades": "✖ ~[端口]已被占用",
+	"initFavicon@proto": "加载 Favicon",
+	"initFavicon@hades": "加载 ~[Favicon]",
+	"initFaviconArgument@proto": "文件路径：{{-favicon}}",
+	"initFaviconArgument@hades": "~[文件路径]{{-favicon,value@hades}}",
+	"initHarbour@proto": "加载 港湾",
+	"initHarbour@hades": "加载 ~[港湾]",
+	"invalidHarbour@proto": "'Harbour'必须是类型function，值：{{-value,valueType}}",
+	"invalidHarbour@hades": "~[Harbour]必须是类型~{function}，值{{-value,valueType@hades}}"
 }
