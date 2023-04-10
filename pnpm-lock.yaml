@@ -30,6 +30,15 @@ devDependencies:
   '@types/koa':
     specifier: ^2.13.6
     version: 2.13.6
+  '@types/koa-compress':
+    specifier: ^4.0.3
+    version: 4.0.3
+  '@types/koa-favicon':
+    specifier: ^2.0.21
+    version: 2.0.21
+  '@types/koa__cors':
+    specifier: ^4.0.0
+    version: 4.0.0
   '@types/node':
     specifier: ^18.15.11
     version: 18.15.11
@@ -222,6 +231,19 @@ packages:
       '@types/koa': 2.13.6
     dev: true
 
+  /@types/koa-compress@4.0.3:
+    resolution: {integrity: sha512-nJSII/tOSvYCwk3yDEBJLHd8ctkt5CQFZ0j8ZBnHZ2x0hg24z9H1i38lWXA/5z0Ix0uitMW1jov+kVbQI1aNPQ==}
+    dependencies:
+      '@types/koa': 2.13.6
+      '@types/node': 18.15.11
+    dev: true
+
+  /@types/koa-favicon@2.0.21:
+    resolution: {integrity: sha512-paH1nheVhijx/VduoR/RCD/qTCiX+OI/6fHLi3mZae053Ts+gUBOrKtzl3pMTDbdEBqdLolfLje3PZbb6jW0jQ==}
+    dependencies:
+      '@types/koa': 2.13.6
+    dev: true
+
   /@types/koa@2.13.6:
     resolution: {integrity: sha512-diYUfp/GqfWBAiwxHtYJ/FQYIXhlEhlyaU7lB/bWQrx4Il9lCET5UwpFy3StOAohfsxxvEQ11qIJgT1j2tfBvw==}
     dependencies:
@@ -233,6 +255,12 @@ packages:
       '@types/keygrip': 1.0.2
       '@types/koa-compose': 3.2.5
       '@types/node': 18.15.11
+    dev: true
+
+  /@types/koa__cors@4.0.0:
+    resolution: {integrity: sha512-qpwswNgQ2GxiDGNnKbDSBY5XmQTVJ6fspNvInLsAJ+jSwINxihvVzblj5anujNBg2BtL0xpUrcIt3UYwGzu05A==}
+    dependencies:
+      '@types/koa': 2.13.6
     dev: true
 
   /@types/mime@3.0.1:

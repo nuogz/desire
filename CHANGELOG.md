@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v6.0.1 - 2023.04.10 18
+* use `tsconfig.json` instead `jsconfig.json` for its fuck tsc declaration
+
+
 ## v6.0.0 - 2023.04.10 16
 * (break) `@nuogz/desire-harb-default` has been renamed to `@nuogz/desire-harbour`
 * (break) refactor config

@@ -1,6 +1,6 @@
 {
 	"name": "@nuogz/desire",
-	"version": "6.0.0",
+	"version": "6.0.1",
 	"description": "server library based on koa",
 	"author": "Nuogz",
 	"license": "LGPL-3.0-or-later",
@@ -35,6 +35,9 @@
 	},
 	"devDependencies": {
 		"@types/koa": "^2.13.6",
+		"@types/koa-compress": "^4.0.3",
+		"@types/koa-favicon": "^2.0.21",
+		"@types/koa__cors": "^4.0.0",
 		"@types/node": "^18.15.11",
 		"eslint": "^8.38.0",
 		"typescript": "^4.9.5"
