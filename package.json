@@ -1,6 +1,6 @@
 {
 	"name": "@nuogz/desire",
-	"version": "6.0.1",
+	"version": "6.0.2",
 	"description": "server library based on koa",
 	"author": "Nuogz",
 	"license": "LGPL-3.0-or-later",
@@ -21,7 +21,7 @@
 		"**/*.d.ts"
 	],
 	"scripts": {
-		"emitDeclaration": "tsc ./index.js --declaration --emitDeclarationOnly --allowJs"
+		"emitDeclaration": "tsc --project tsconfig.json"
 	},
 	"dependencies": {
 		"@koa/cors": "^4.0.0",

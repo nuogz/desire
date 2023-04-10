@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v6.0.2 - 2023.04.10 19
+* remove declarations from `@nuogz/desire-harbour`
+
+
 ## v6.0.1 - 2023.04.10 18
 * use `tsconfig.json` instead `jsconfig.json` for its fuck tsc declaration
 

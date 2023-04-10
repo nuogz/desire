@@ -132,7 +132,7 @@ export type DesireOption = {
     /**
      * Harbour Option
      */
-    harbour?: Object | any | import("@nuogz/desire-harbour").HarbourOption;
+    harbour?: Object | undefined;
     /**
      * the interface and folder mapping initializer, called `Harbour`, which is used to apply options to the `koajs` instance, and is invoked by passing an instance of `koajs`. pass string `'default'`, `''` or undefined will use module `@nuogz/desire-harbour`; pass a `string` will try to import a module with the same name as the option；pass a `class` will be created and then call its `init()` method; pass a `function` will be called directly
      */
