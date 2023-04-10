@@ -4,15 +4,8 @@
 		"moduleResolution": "nodenext",
 		"target": "esnext",
 		"experimentalDecorators": true,
-		"strict": true,
-		"allowJs": true,
-		"declaration": true,
-		"emitDeclarationOnly": true,
-		"skipLibCheck": true
+		"strict": true
 	},
-	"include": [
-		"./index.js"
-	],
 	"exclude": [
 		"test",
 		"node_modules"

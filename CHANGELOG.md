@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v6.0.4 - 2023.04.10 19
+* fix `d.ts`
+* revert some configs
+
+
 ## v6.0.3 - 2023.04.10 19
 * remove optionalDependencies `@nuogz/desire-harbour`
 
