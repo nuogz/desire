@@ -133,7 +133,7 @@ export default class Desire {
 	/** @type {Object} */
 	harbour;
 	/** @type {Function|string} */
-	Harbour;
+	Harbour = 'default';
 	/** @type {Function|string} */
 	HarbourImport;
 
@@ -307,29 +307,36 @@ export default class Desire {
 	/** init Harbour */
 	async initHarbour() {
 		const { optionHarbour: option, logFatal, logInfo } = this;
-		let { Harbour } = this;
-
 
 		if(option === false) { return; }
 
 
+		let { Harbour } = this;
 		try {
-			if(Harbour != 'default' && Harbour != '' && typeof Harbour == 'string') {
+			if(typeof Harbour == 'string' && Harbour != 'default') {
 				Harbour = this.HarbourImport = (await import(Harbour)).default;
 			}
-			else {
-				Harbour = this.HarbourImport = (await import('@nuogz/desire-harbour')).default;
+
+
+			if(typeof Harbour == 'function') {
+				if(Reflect.getOwnPropertyDescriptor(Harbour, 'prototype')) {
+					this.harbour = await new Harbour(this, option);
+
+					await this.harbour.init(this, option);
+				}
+				else {
+					this.harbour = await Harbour(this, option);
+				}
 			}
 
+			else if(Harbour == 'default') {
+				Harbour = this.HarbourImport = (await import('@nuogz/desire-harbour')).default;
 
-			if(typeof Harbour == 'function' && Reflect.getOwnPropertyDescriptor(Harbour, 'prototype')) {
 				this.harbour = await new Harbour(this, option);
 
 				await this.harbour.init(this, option);
 			}
-			else if(typeof Harbour == 'function') {
-				this.harbour = await Harbour(this, option);
-			}
+
 			else {
 				throw Error(T('invalidHarbour', { value: Harbour }));
 			}

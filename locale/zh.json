@@ -9,6 +9,6 @@
 	"initFaviconArgument@hades": "~[文件路径]{{-favicon,value@hades}}",
 	"initHarbour@proto": "加载 港湾",
 	"initHarbour@hades": "加载 ~[港湾]",
-	"invalidHarbour@proto": "'Harbour'必须是类型function，值：{{-value,valueType}}",
-	"invalidHarbour@hades": "~[Harbour]必须是类型~{function}，值{{-value,valueType@hades}}"
+	"invalidHarbour@proto": "'Harbour'可选但必须是类型string或function的其中之一，值：{{-value,valueType}}",
+	"invalidHarbour@hades": "~[Harbour]可选但必须是类型~{string}或~{function}的其中之一，值{{-value,valueType@hades}}"
 }

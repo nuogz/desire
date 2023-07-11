@@ -6,6 +6,9 @@
 		"experimentalDecorators": true,
 		"strict": true
 	},
+	"include": [
+		"**/*.js"
+	],
 	"exclude": [
 		"test",
 		"node_modules"

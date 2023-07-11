@@ -10,6 +10,6 @@
 	"initFaviconArgument@hades": "~[path] {{-favicon,value@hades}}",
 	"initHarbour@proto": "init Harbour",
 	"initHarbour@hades": "init ~[Harbour]",
-	"invalidHarbour@proto": "'Harbour' must be of type function, value: {{-value,valueType}}",
-	"invalidHarbour@hades": "~[Harbour] must be of type ~{function}, ~[value] {{-value,valueType@hades}}"
+	"invalidHarbour@proto": "'Harbour' is optional but must be one of type string or function, value: {{-value,valueType}}",
+	"invalidHarbour@hades": "~[Harbour] is optional but must be one of type ~{string} or ~{function}, ~[value] {{-value,valueType@hades}}"
 }
