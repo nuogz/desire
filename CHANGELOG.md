@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v6.1.0 - 2023.12.07 10
+* fix `d.ts`
+* tweak enviroment
+* bump up dependencies
+
+
 ## v6.0.5 - 2023.04.10 19
 * fix buggy logic when loading Harbour
 * improve locales

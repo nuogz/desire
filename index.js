@@ -22,8 +22,8 @@ import { injectBaseLogger } from '@nuogz/utility';
 
 
 
-/** @typedef {import('@nuogz/utility/src/injectBaseLogger.js').LoggerLike} LoggerLike */
-/** @typedef {import('@nuogz/utility/src/injectBaseLogger.js').LoggerOption} LoggerOption */
+/** @typedef {import('@nuogz/utility/src/inject-base-logger.pure.js').LoggerLike} LoggerLike */
+/** @typedef {import('@nuogz/utility/src/inject-base-logger.pure.js').LoggerOption} LoggerOption */
 
 
 /**
