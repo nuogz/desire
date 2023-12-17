@@ -102,7 +102,7 @@ export type ModuleOption = {
     /**
      * module `@koa/cors` option
      */
-    cors?: (KoaCors.Options & DesireExtendDisableOption) | undefined;
+    cors?: (KoaCORS.Options & DesireExtendDisableOption) | undefined;
     /**
      * module `koa-helmet` contentSecurityPolicy option
      */
@@ -141,5 +141,5 @@ export type DesireOption = {
 };
 import Koa from 'koa';
 import KoaCompress from 'koa-compress';
-import KoaCors from '@koa/cors';
+import KoaCORS from '@koa/cors';
 import KoaHelmet from 'koa-helmet';

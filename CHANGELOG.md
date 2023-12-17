@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v6.1.1 - 2023.12.17 16
+* bump up `@koa/cors` to `v5.x`
+* bump up dependencies
+
+
 ## v6.1.0 - 2023.12.07 10
 * fix `d.ts`
 * tweak enviroment

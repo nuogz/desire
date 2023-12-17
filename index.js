@@ -8,7 +8,7 @@ import Koa from 'koa';
 
 
 import KoaCompress from 'koa-compress';
-import KoaCors from '@koa/cors';
+import KoaCORS from '@koa/cors';
 import KoaHelmet from 'koa-helmet';
 import KoaFavicon from 'koa-favicon';
 
@@ -59,7 +59,7 @@ import { injectBaseLogger } from '@nuogz/utility';
  * @property {KoaOption} [koa] module `koa` option
  *
  * @property {KoaCompress.CompressOptions & DesireExtendDisableOption} [compress] module `koa-compress` option
- * @property {KoaCors.Options & DesireExtendDisableOption} [cors] module `@koa/cors` option
+ * @property {KoaCORS.Options & DesireExtendDisableOption} [cors] module `@koa/cors` option
  * @property {KoaHelmet.KoaHelmetContentSecurityPolicyConfiguration & DesireExtendDisableOption} [csp] module `koa-helmet` contentSecurityPolicy option
  * @property {(KoaFaviconOption & DesireExtendDisableOption) | string} [favicon] module `koa-favicon` option or favicon path
  */
@@ -243,7 +243,7 @@ export default class Desire {
 
 		// CORS header
 		if(cors?.disable !== false) {
-			koa.use(KoaCors(cors));
+			koa.use(KoaCORS(cors));
 		}
 
 
