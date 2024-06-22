@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v6.2.0 - 2024.06.22 11
+* (break) improve the export structure to make it more suitable for tree-shaking
+* improve develop enviroment
+* bump up dependencies
+
+
 ## v6.1.1 - 2023.12.17 16
 * bump up `@koa/cors` to `v5.x`
 * bump up dependencies

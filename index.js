@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import { createServer } from 'http';
 import { createSecureServer } from 'http2';
-import { dirname, resolve } from 'path';
+import { dirname, resolve as resolvePath } from 'path';
 import { fileURLToPath } from 'url';
 
 import Koa from 'koa';
@@ -22,6 +22,9 @@ import { injectBaseLogger } from '@nuogz/utility';
 
 
 
+/** @typedef {Koa.Context} KoaContext */
+/** @typedef {Koa.Response} KoaResponse */
+/** @typedef {Koa.Request} KoaRequest */
 /** @typedef {import('@nuogz/utility/src/inject-base-logger.pure.js').LoggerLike} LoggerLike */
 /** @typedef {import('@nuogz/utility/src/inject-base-logger.pure.js').LoggerOption} LoggerOption */
 
@@ -84,7 +87,7 @@ import { injectBaseLogger } from '@nuogz/utility';
 
 
 
-loadI18NResource('@nuogz/desire', resolve(dirname(fileURLToPath(import.meta.url)), 'locale'));
+loadI18NResource('@nuogz/desire', resolvePath(dirname(fileURLToPath(import.meta.url)), 'locale'));
 
 const T = TT('@nuogz/desire');
 
@@ -93,16 +96,7 @@ const hasOption = (key, object) => key in object && object[key] !== undefined;
 
 
 
-export default class Desire {
-	/** @type {Koa.Context} */
-	static KoaContext = KoaContext;
-	/** @type {Koa.Response} */
-	static KoaResponse = KoaResponse;
-	/** @type {Koa.Request} */
-	static KoaRequest = KoaRequest;
-
-
-
+class Desire {
 	/** @type {DesireOption} */
 	optionRaw;
 
@@ -288,8 +282,8 @@ export default class Desire {
 			this.initServer();
 
 			// listen port
-			await new Promise((resolve, reject) =>
-				server.listen(port, host, error => error ? reject(error) : resolve())
+			await new Promise((resolver, rejecter) =>
+				server.listen(port, host, error => error ? rejecter(error) : resolver())
 			);
 
 
@@ -369,3 +363,11 @@ export default class Desire {
 		});
 	}
 }
+
+
+
+export {
+	Desire, Koa,
+	KoaContext, KoaResponse, KoaRequest,
+	KoaCompress, KoaCORS, KoaHelmet, KoaFavicon
+};

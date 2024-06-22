@@ -1,63 +1,8 @@
-/// <reference types="node" resolution-mode="require"/>
-/// <reference types="node" resolution-mode="require"/>
-export default class Desire {
-    /** @type {Koa.Context} */
-    static KoaContext: Koa.Context;
-    /** @type {Koa.Response} */
-    static KoaResponse: Koa.Response;
-    /** @type {Koa.Request} */
-    static KoaRequest: Koa.Request;
-    /** @param {DesireOption} [option] */
-    constructor(option?: DesireOption | undefined);
-    /** @type {DesireOption} */
-    optionRaw: DesireOption;
-    /** @type {import('http').Server | import('http2').Http2Server} */
-    server: import('http').Server | import('http2').Http2Server;
-    /** @type {Koa} */
-    koa: Koa;
-    /** @type {string} */
-    name: string;
-    /** @type {string} */
-    host: string;
-    /** @type {number} */
-    port: number;
-    /** @type {ModuleOption} */
-    option: ModuleOption;
-    /** @type {Object} */
-    optionHarbour: Object;
-    /** @type {Object} */
-    harbour: Object;
-    /** @type {Function|string} */
-    Harbour: Function | string;
-    /** @type {Function|string} */
-    HarbourImport: Function | string;
-    /** @type {LoggerLike} */
-    logTrace: LoggerLike;
-    /** @type {LoggerLike} */
-    logDebug: LoggerLike;
-    /** @type {LoggerLike} */
-    logInfo: LoggerLike;
-    /** @type {LoggerLike} */
-    logError: LoggerLike;
-    /** @type {LoggerLike} */
-    logWarn: LoggerLike;
-    /** @type {LoggerLike} */
-    logFatal: LoggerLike;
-    /** @type {LoggerLike} */
-    logMark: LoggerLike;
-    initBase(): void;
-    initFavicon(): void;
-    initHeader(): Promise<void>;
-    /** server protocol */
-    get protocol(): "http2" | "http";
-    /** start server */
-    start(): Promise<this>;
-    /** init Harbour */
-    initHarbour(): Promise<void>;
-    initServer(): void;
-}
-export type LoggerLike = import('@nuogz/utility/src/inject-base-logger.pure.js').LoggerLike;
-export type LoggerOption = import('@nuogz/utility/src/inject-base-logger.pure.js').LoggerOption;
+export type KoaContext = Koa.Context;
+export type KoaResponse = Koa.Response;
+export type KoaRequest = Koa.Request;
+export type LoggerLike = import("@nuogz/utility/src/inject-base-logger.pure.js").LoggerLike;
+export type LoggerOption = import("@nuogz/utility/src/inject-base-logger.pure.js").LoggerOption;
 /**
  * should equivalent to the first argument of `new Koa(option)`
  */
@@ -139,7 +84,59 @@ export type DesireOption = {
     Harbour?: string | Function | undefined;
     logger?: import("@nuogz/utility/src/inject-base-logger.pure.js").LoggerOption | undefined;
 };
+export class Desire {
+    /** @param {DesireOption} [option] */
+    constructor(option?: DesireOption | undefined);
+    /** @type {DesireOption} */
+    optionRaw: DesireOption;
+    /** @type {import('http').Server | import('http2').Http2Server} */
+    server: import("http").Server | import("http2").Http2Server;
+    /** @type {Koa} */
+    koa: Koa;
+    /** @type {string} */
+    name: string;
+    /** @type {string} */
+    host: string;
+    /** @type {number} */
+    port: number;
+    /** @type {ModuleOption} */
+    option: ModuleOption;
+    /** @type {Object} */
+    optionHarbour: Object;
+    /** @type {Object} */
+    harbour: Object;
+    /** @type {Function|string} */
+    Harbour: Function | string;
+    /** @type {Function|string} */
+    HarbourImport: Function | string;
+    /** @type {LoggerLike} */
+    logTrace: LoggerLike;
+    /** @type {LoggerLike} */
+    logDebug: LoggerLike;
+    /** @type {LoggerLike} */
+    logInfo: LoggerLike;
+    /** @type {LoggerLike} */
+    logError: LoggerLike;
+    /** @type {LoggerLike} */
+    logWarn: LoggerLike;
+    /** @type {LoggerLike} */
+    logFatal: LoggerLike;
+    /** @type {LoggerLike} */
+    logMark: LoggerLike;
+    initBase(): void;
+    initFavicon(): void;
+    initHeader(): Promise<void>;
+    /** server protocol */
+    get protocol(): "http2" | "http";
+    /** start server */
+    start(): Promise<this>;
+    /** init Harbour */
+    initHarbour(): Promise<void>;
+    initServer(): void;
+}
 import Koa from 'koa';
 import KoaCompress from 'koa-compress';
 import KoaCORS from '@koa/cors';
 import KoaHelmet from 'koa-helmet';
+import KoaFavicon from 'koa-favicon';
+export { Koa, KoaCompress, KoaCORS, KoaHelmet, KoaFavicon };
