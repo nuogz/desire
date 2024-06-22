@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v6.2.1 - 2024.06.22 15
+* (break) revert to export `Desire` class as default
+
+
 ## v6.2.0 - 2024.06.22 11
 * (break) improve the export structure to make it more suitable for tree-shaking
 * improve develop enviroment

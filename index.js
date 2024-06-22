@@ -96,7 +96,7 @@ const hasOption = (key, object) => key in object && object[key] !== undefined;
 
 
 
-class Desire {
+export default class Desire {
 	/** @type {DesireOption} */
 	optionRaw;
 
@@ -367,7 +367,7 @@ class Desire {
 
 
 export {
-	Desire, Koa,
+	Koa,
 	KoaContext, KoaResponse, KoaRequest,
 	KoaCompress, KoaCORS, KoaHelmet, KoaFavicon
 };

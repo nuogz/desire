@@ -1,3 +1,53 @@
+export default class Desire {
+    /** @param {DesireOption} [option] */
+    constructor(option?: DesireOption | undefined);
+    /** @type {DesireOption} */
+    optionRaw: DesireOption;
+    /** @type {import('http').Server | import('http2').Http2Server} */
+    server: import("http").Server | import("http2").Http2Server;
+    /** @type {Koa} */
+    koa: Koa;
+    /** @type {string} */
+    name: string;
+    /** @type {string} */
+    host: string;
+    /** @type {number} */
+    port: number;
+    /** @type {ModuleOption} */
+    option: ModuleOption;
+    /** @type {Object} */
+    optionHarbour: Object;
+    /** @type {Object} */
+    harbour: Object;
+    /** @type {Function|string} */
+    Harbour: Function | string;
+    /** @type {Function|string} */
+    HarbourImport: Function | string;
+    /** @type {LoggerLike} */
+    logTrace: LoggerLike;
+    /** @type {LoggerLike} */
+    logDebug: LoggerLike;
+    /** @type {LoggerLike} */
+    logInfo: LoggerLike;
+    /** @type {LoggerLike} */
+    logError: LoggerLike;
+    /** @type {LoggerLike} */
+    logWarn: LoggerLike;
+    /** @type {LoggerLike} */
+    logFatal: LoggerLike;
+    /** @type {LoggerLike} */
+    logMark: LoggerLike;
+    initBase(): void;
+    initFavicon(): void;
+    initHeader(): Promise<void>;
+    /** server protocol */
+    get protocol(): "http2" | "http";
+    /** start server */
+    start(): Promise<this>;
+    /** init Harbour */
+    initHarbour(): Promise<void>;
+    initServer(): void;
+}
 export type KoaContext = Koa.Context;
 export type KoaResponse = Koa.Response;
 export type KoaRequest = Koa.Request;
@@ -84,56 +134,6 @@ export type DesireOption = {
     Harbour?: string | Function | undefined;
     logger?: import("@nuogz/utility/src/inject-base-logger.pure.js").LoggerOption | undefined;
 };
-export class Desire {
-    /** @param {DesireOption} [option] */
-    constructor(option?: DesireOption | undefined);
-    /** @type {DesireOption} */
-    optionRaw: DesireOption;
-    /** @type {import('http').Server | import('http2').Http2Server} */
-    server: import("http").Server | import("http2").Http2Server;
-    /** @type {Koa} */
-    koa: Koa;
-    /** @type {string} */
-    name: string;
-    /** @type {string} */
-    host: string;
-    /** @type {number} */
-    port: number;
-    /** @type {ModuleOption} */
-    option: ModuleOption;
-    /** @type {Object} */
-    optionHarbour: Object;
-    /** @type {Object} */
-    harbour: Object;
-    /** @type {Function|string} */
-    Harbour: Function | string;
-    /** @type {Function|string} */
-    HarbourImport: Function | string;
-    /** @type {LoggerLike} */
-    logTrace: LoggerLike;
-    /** @type {LoggerLike} */
-    logDebug: LoggerLike;
-    /** @type {LoggerLike} */
-    logInfo: LoggerLike;
-    /** @type {LoggerLike} */
-    logError: LoggerLike;
-    /** @type {LoggerLike} */
-    logWarn: LoggerLike;
-    /** @type {LoggerLike} */
-    logFatal: LoggerLike;
-    /** @type {LoggerLike} */
-    logMark: LoggerLike;
-    initBase(): void;
-    initFavicon(): void;
-    initHeader(): Promise<void>;
-    /** server protocol */
-    get protocol(): "http2" | "http";
-    /** start server */
-    start(): Promise<this>;
-    /** init Harbour */
-    initHarbour(): Promise<void>;
-    initServer(): void;
-}
 import Koa from 'koa';
 import KoaCompress from 'koa-compress';
 import KoaCORS from '@koa/cors';
