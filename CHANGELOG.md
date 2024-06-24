@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v6.3.0 - 2024.06.24 15
+* restruct types
+* bump up dependencies
+
+
 ## v6.2.1 - 2024.06.22 15
 * (break) revert to export `Desire` class as default
 

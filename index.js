@@ -22,68 +22,18 @@ import { injectBaseLogger } from '@nuogz/utility';
 
 
 
+/** @typedef {import('./bases.d.ts').ConstructorOption} ConstructorOption */
+/** @typedef {import('./bases.d.ts').ModuleOptionExtend} ModuleOptionExtend */
+/** @typedef {import('./bases.d.ts').ModulesOption} ModulesOption */
+/** @typedef {import('./bases.d.ts').KoaConstructorOption} KoaConstructorOption */
+/** @typedef {import('./bases.d.ts').KoaFaviconOption} KoaFaviconOption */
+
 /** @typedef {Koa.Context} KoaContext */
 /** @typedef {Koa.Response} KoaResponse */
 /** @typedef {Koa.Request} KoaRequest */
+
 /** @typedef {import('@nuogz/utility/src/inject-base-logger.pure.js').LoggerLike} LoggerLike */
 /** @typedef {import('@nuogz/utility/src/inject-base-logger.pure.js').LoggerOption} LoggerOption */
-
-
-/**
- * should equivalent to the first argument of `new Koa(option)`
- * @typedef {Object} KoaOption
- * @property {string} [env]
- * @property {string[]} [keys]
- * @property {boolean} [proxy]
- * @property {number} [subdomainOffset]
- * @property {string} [proxyIpHeader]
- * @property {number} [maxIpsCount]
- */
-
-/**
- * should equivalent to the argument of `new KoaFavicon(path, { maxage })`
- * @typedef {Object} KoaFaviconOption
- * @property {string} path
- * @property {number} [maxage] ms
- */
-
-
-/**
- * @typedef {Object} DesireExtendDisableOption
- * @property {boolean} [disable]
- */
-
-/**
- * @typedef {Object} ModuleOption
- *
- * @property {import('http').ServerOptions} [http] node module HTTP option
- * @property {import('http2').SecureServerOptions & DesireExtendDisableOption} [http2] node module HTTP2 option
- *
- * @property {KoaOption} [koa] module `koa` option
- *
- * @property {KoaCompress.CompressOptions & DesireExtendDisableOption} [compress] module `koa-compress` option
- * @property {KoaCORS.Options & DesireExtendDisableOption} [cors] module `@koa/cors` option
- * @property {KoaHelmet.KoaHelmetContentSecurityPolicyConfiguration & DesireExtendDisableOption} [csp] module `koa-helmet` contentSecurityPolicy option
- * @property {(KoaFaviconOption & DesireExtendDisableOption) | string} [favicon] module `koa-favicon` option or favicon path
- */
-
-
-/**
- * Desire constructor option
- * @typedef {Object} DesireOption
- *
- * @property {string} [name] name for server. Used to log output
- *
- * @property {string} [host] listen host
- * @property {number} [port] listen port
- *
- * @property {ModuleOption} [module={}]
- *
- * @property {Object} [harbour] Harbour Option
- * @property {Function | string} [Harbour] the interface and folder mapping initializer, called `Harbour`, which is used to apply options to the `koajs` instance, and is invoked by passing an instance of `koajs`. pass string `'default'`, `''` or undefined will use module `@nuogz/desire-harbour`; pass a `string` will try to import a module with the same name as the option；pass a `class` will be created and then call its `init()` method; pass a `function` will be called directly
- *
- * @property {LoggerOption} [logger]
- */
 
 
 
@@ -92,16 +42,21 @@ loadI18NResource('@nuogz/desire', resolvePath(dirname(fileURLToPath(import.meta.
 const T = TT('@nuogz/desire');
 
 
+/**
+ * @param {string} key
+ * @param {Object} object
+ * @returns {boolean}
+ */
 const hasOption = (key, object) => key in object && object[key] !== undefined;
 
 
 
 export default class Desire {
-	/** @type {DesireOption} */
+	/** @type {ConstructorOption} */
 	optionRaw;
 
 
-	/** @type {import('http').Server | import('http2').Http2Server} */
+	/** @type {import('http').Server|import('http2').Http2Server} */
 	server;
 	/** @type {Koa} */
 	koa;
@@ -118,7 +73,7 @@ export default class Desire {
 
 
 
-	/** @type {ModuleOption} */
+	/** @type {ModulesOption} */
 	option = {};
 
 
@@ -150,7 +105,7 @@ export default class Desire {
 
 
 
-	/** @param {DesireOption} [option] */
+	/** @param {ConstructorOption} [option] */
 	constructor(option = {}) {
 		this.optionRaw = option;
 
@@ -171,7 +126,6 @@ export default class Desire {
 		injectBaseLogger(this, Object.assign({ name: this.name }, option.logger));
 
 
-
 		this.initBase();
 
 		this.initFavicon();
@@ -184,10 +138,9 @@ export default class Desire {
 	initBase() {
 		const { option: { koa, http, http2 } } = this;
 
-		const useHTTP2 = http2 && http2.disable !== false;
 
-
-		if(useHTTP2) {
+		const willUseHTTP2 = http2 && http2.disable !== false;
+		if(willUseHTTP2) {
 			http2.key = typeof http2.key == 'string'
 				? readFileSync(http2.key)
 				: http2.key;
@@ -197,7 +150,7 @@ export default class Desire {
 		}
 
 
-		this.server = useHTTP2 ? createSecureServer(http2) : createServer(http);
+		this.server = willUseHTTP2 ? createSecureServer(http2) : createServer(http);
 
 
 		this.koa = new Koa(koa);
@@ -206,24 +159,24 @@ export default class Desire {
 	initFavicon() {
 		const { option: { favicon }, koa, logDebug } = this;
 
+		if(favicon === true) { return; }
 
-		if(favicon && favicon?.disable !== false) {
-			if(typeof favicon == 'string') {
-				koa.use(KoaFavicon(favicon));
-			}
-			else {
-				koa.use(KoaFavicon(favicon.path, { maxage: favicon.maxage }));
-			}
 
-			logDebug(T('initFavicon'), T('initFaviconArgument', { favicon: favicon.path || favicon }));
+		if(typeof favicon == 'string') {
+			koa.use(KoaFavicon(favicon));
 		}
+		else {
+			koa.use(KoaFavicon(favicon.path, { maxage: favicon.maxage, mime: favicon.mime }));
+		}
+
+		logDebug(T('initFavicon'), T('initFaviconArgument', { favicon: favicon.path || favicon }));
 	}
 
 	async initHeader() {
 		const { option: { compress, cors, csp }, koa } = this;
 
 
-		// ZLIB compress
+		// ZLIB compress (disable default)
 		if(compress && compress.disable !== false) {
 			const { constants } = await import('zlib');
 
@@ -235,13 +188,13 @@ export default class Desire {
 		}
 
 
-		// CORS header
+		// CORS header (enable default)
 		if(cors?.disable !== false) {
 			koa.use(KoaCORS(cors));
 		}
 
 
-		// HSTS header
+		// HSTS header (enable default)
 		if(csp?.disable !== false) {
 			koa.use(KoaHelmet.contentSecurityPolicy(Object.assign({}, csp, {
 				directives: {
@@ -267,11 +220,11 @@ export default class Desire {
 
 
 
-	/** server protocol */
-	get protocol() { return typeof this.option.http2 == 'object' && this.option.http2 != null ? 'http2' : 'http'; }
+	/** Server protocol */
+	get protocol() { return typeof this.option.http2 == 'object' && this.option.http2 !== null ? 'http2' : 'http'; }
 
 
-	/** start server */
+	/** Start server */
 	async start() {
 		const { host, port, server, logFatal, logInfo } = this;
 
@@ -280,6 +233,7 @@ export default class Desire {
 			await this.initHarbour();
 
 			this.initServer();
+
 
 			// listen port
 			await new Promise((resolver, rejecter) =>
@@ -298,7 +252,6 @@ export default class Desire {
 	}
 
 
-	/** init Harbour */
 	async initHarbour() {
 		const { optionHarbour: option, logFatal, logInfo } = this;
 
@@ -334,6 +287,7 @@ export default class Desire {
 			else {
 				throw Error(T('invalidHarbour', { value: Harbour }));
 			}
+
 
 			logInfo(T('initHarbour'), '✔ ');
 		}
