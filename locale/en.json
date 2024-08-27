@@ -1,15 +1,9 @@
 {
-	"Server@proto":"Desire",
-	"listen@proto": "listen {{-url}}",
-	"listen@hades": "listen {{-url,value@hades}}",
-	"listenError@proto": "✖ ~[Port] has been used",
-	"listenError@hades": "✖ ~[Port] has been used",
-	"initFavicon@proto": "init Favicon",
-	"initFavicon@hades": "init ~[Favicon]",
-	"initFaviconArgument@proto": "path: {{-favicon}}",
-	"initFaviconArgument@hades": "~[path] {{-favicon,value@hades}}",
-	"initHarbour@proto": "init Harbour",
-	"initHarbour@hades": "init ~[Harbour]",
-	"invalidHarbour@proto": "'Harbour' is optional but must be one of type string or function, value: {{-value,valueType}}",
-	"invalidHarbour@hades": "~[Harbour] is optional but must be one of type ~{string} or ~{function}, ~[value] {{-value,valueType@hades}}"
+	"server":"Desire",
+	"listen": "listen {{-url,value}}",
+	"listen-error": "✖ ~[Port] has been used",
+	"init-favicon": "init ~[Favicon]",
+	"init-favicon-argument": "~[path] {{-favicon,value}}",
+	"init-harbour": "init ~[Harbour]",
+	"invalid-harbour": "~[Harbour] is optional but must be one of type ~{string} or ~{function}, ~[value] {{-value,valueType}}"
 }

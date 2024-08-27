@@ -39,7 +39,7 @@ import { injectBaseLogger } from '@nuogz/utility';
 
 loadI18NResource('@nuogz/desire', resolvePath(dirname(fileURLToPath(import.meta.url)), 'locale'));
 
-const T = TT('@nuogz/desire');
+const { T } = TT('@nuogz/desire');
 
 
 /**
@@ -63,7 +63,7 @@ export default class Desire {
 
 
 	/** @type {string} */
-	name = T('Server');
+	name = T('server');
 
 
 	/** @type {string} */
@@ -159,7 +159,7 @@ export default class Desire {
 	initFavicon() {
 		const { option: { favicon }, koa, logDebug } = this;
 
-		if(favicon === true) { return; }
+		if(favicon === false) { return; }
 
 
 		if(typeof favicon == 'string') {
@@ -169,7 +169,7 @@ export default class Desire {
 			koa.use(KoaFavicon(favicon.path, { maxage: favicon.maxage, mime: favicon.mime }));
 		}
 
-		logDebug(T('initFavicon'), T('initFaviconArgument', { favicon: favicon.path || favicon }));
+		logDebug(T('init-favicon'), T('init-favicon-argument', { favicon: favicon.path || favicon }));
 	}
 
 	async initHeader() {
@@ -285,14 +285,14 @@ export default class Desire {
 			}
 
 			else {
-				throw Error(T('invalidHarbour', { value: Harbour }));
+				throw Error(T('invalid-harbour', { value: Harbour }));
 			}
 
 
-			logInfo(T('initHarbour'), '✔ ');
+			logInfo(T('init-harbour'), '✔ ');
 		}
 		catch(error) {
-			logFatal(T('initHarbour'), error);
+			logFatal(T('init-harbour'), error);
 		}
 	}
 
@@ -307,7 +307,7 @@ export default class Desire {
 		// listen error
 		server.on('error', error => {
 			if(error.code == 'EADDRINUSE') {
-				logFatal(T('listen', { url: `${this.protocol}://${host}:${port}` }), T('listenError'));
+				logFatal(T('listen', { url: `${this.protocol}://${host}:${port}` }), T('listen-error'));
 			}
 			else {
 				logFatal(T('listen', { url: `${this.protocol}://${host}:${port}` }), error);

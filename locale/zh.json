@@ -1,14 +1,8 @@
 {
-	"listen@proto": "监听 {{-url}}",
-	"listen@hades": "监听 {{-url,value@hades}}",
-	"listenError@proto": "✖ ~[端口]已被占用",
-	"listenError@hades": "✖ ~[端口]已被占用",
-	"initFavicon@proto": "加载 Favicon",
-	"initFavicon@hades": "加载 ~[Favicon]",
-	"initFaviconArgument@proto": "文件路径：{{-favicon}}",
-	"initFaviconArgument@hades": "~[文件路径]{{-favicon,value@hades}}",
-	"initHarbour@proto": "加载 港湾",
-	"initHarbour@hades": "加载 ~[港湾]",
-	"invalidHarbour@proto": "'Harbour'可选但必须是类型string或function的其中之一，值：{{-value,valueType}}",
-	"invalidHarbour@hades": "~[Harbour]可选但必须是类型~{string}或~{function}的其中之一，值{{-value,valueType@hades}}"
+	"listen": "监听 {{-url,value}}",
+	"listen-error": "✖ ~[端口]已被占用",
+	"init-favicon": "加载 ~[Favicon]",
+	"init-favicon-argument": "~[文件路径]{{-favicon,value}}",
+	"init-harbour": "加载 ~[港湾]",
+	"invalid-harbour": "~[Harbour]可选但必须是类型~{string}或~{function}的其中之一，值{{-value,valueType}}"
 }

@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v6.4.0 - 2024.08.27 09
+* fix: fix `false` appearance as favicon opitons
+* docs: update locale
+* deps: bump up dependencies
+	* deps: bump up `koa-helmet` to `v7.x`
+* chore: improve develop environments
+
+
 ## v6.3.0 - 2024.06.24 15
 * restruct types
 * bump up dependencies

@@ -1,7 +1,7 @@
 /**
  * @file @nuogz/common-eslint-config
  * @author DanoR
- * @version 5.2.0 2024.06.18 15
+ * @version 5.2.1 2024.08.13 14
  * @requires globals
  * @requires @eslint/js
  * @requires @stylistic/eslint-plugin-js
@@ -25,7 +25,7 @@ const PKG = JSON.parse(readFileSync(resolve(dirname(fileURLToPath(import.meta.ur
 const typesSource = new Set(PKG.typesSource instanceof Array ? PKG.typesSource : []);
 
 
-/** @type {import('eslint').Linter.FlatConfig[]} */
+/** @type {import('eslint').Linter.Config[]} */
 const configs = [
 	{
 		name: 'ignore-dist',
