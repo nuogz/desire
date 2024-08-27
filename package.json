@@ -1,6 +1,6 @@
 {
 	"name": "@nuogz/desire",
-	"version": "6.4.0",
+	"version": "6.5.0",
 	"description": "Server library based on Koa",
 	"author": "DanoR",
 	"license": "LGPL-3.0-or-later",
