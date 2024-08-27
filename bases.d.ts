@@ -2,6 +2,8 @@ import KoaCompress from 'koa-compress';
 import KoaCORS from '@koa/cors';
 import KoaHelmet from 'koa-helmet';
 
+import { LoggerOption } from '@nuogz/utility/types/src/inject-base-logger.pure.js';
+
 
 
 /** Desire constructor options */
@@ -25,7 +27,7 @@ export type ConstructorOption = {
 	Harbour?: string | Function | undefined;
 
 	/** Base logger options */
-	logger?: import("@nuogz/utility/src/inject-base-logger.pure.js").LoggerOption | undefined;
+	logger?: LoggerOption | undefined;
 };
 
 

@@ -32,8 +32,8 @@ import { injectBaseLogger } from '@nuogz/utility';
 /** @typedef {Koa.Response} KoaResponse */
 /** @typedef {Koa.Request} KoaRequest */
 
-/** @typedef {import('@nuogz/utility/src/inject-base-logger.pure.js').LoggerLike} LoggerLike */
-/** @typedef {import('@nuogz/utility/src/inject-base-logger.pure.js').LoggerOption} LoggerOption */
+/** @typedef {import('@nuogz/utility/types/src/inject-base-logger.pure.js').LoggerLike} LoggerLike */
+/** @typedef {import('@nuogz/utility/types/src/inject-base-logger.pure.js').LoggerOption} LoggerOption */
 
 
 

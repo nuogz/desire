@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v6.5.1 - 2024.08.27 10
+* docs: fix types
+
+
 ## v6.5.0 - 2024.08.27 09
 * fix: fix `false` appearance as favicon opitons
 * docs: update locale
